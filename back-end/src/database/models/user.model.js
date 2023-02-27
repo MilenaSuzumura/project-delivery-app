@@ -6,16 +6,16 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
     },
     name: {
-      type: DataTypes.STRING(255),
+      type: DataTypes.STRING,
     },
     email: {
-      type: DataTypes.STRING(255),
+      type: DataTypes.STRING,
     },
     password: {
-      type: DataTypes.STRING(255),
+      type: DataTypes.STRING,
     },
     role: {
-      type: DataTypes.STRING(255),
+      type: DataTypes.STRING,
     },
   },
   {
