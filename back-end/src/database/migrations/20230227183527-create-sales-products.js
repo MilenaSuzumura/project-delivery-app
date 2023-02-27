@@ -15,7 +15,7 @@ module.exports = {
         onDelete: 'CASCADE',
       },
       product_id: {
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
         allowNull: false,
         primaryKey: true,
         references: {
