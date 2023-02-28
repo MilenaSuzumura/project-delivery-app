@@ -15,11 +15,11 @@ export default function Register() {
     const passwordRegex = /^.{6,}/;
     const nameRegex = /^.{12,}/;
 
-    const canSignIn = nameRegex.test(nameValue)
+    const canRegister = nameRegex.test(nameValue)
     && emailRegex.test(emailValue)
     && passwordRegex.test(passwordValue);
 
-    if (canSignIn) {
+    if (canRegister) {
       setRegisterAvailable(true);
     } else {
       setRegisterAvailable(false);
@@ -27,6 +27,7 @@ export default function Register() {
   }, [nameValue, emailValue, passwordValue]);
 
   const register = () => {
+    console.log('ME IMPLMENTA!!!');
     setRegisterResponse(false);
   };
 
