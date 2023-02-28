@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
-// import api from '../utils/api';
+import api from '../utils/api';
 
 const loginTestId = 'common_login__';
 
@@ -24,15 +24,13 @@ export default function Login() {
   }, [emailValue, passwordValue]);
 
   const login = async () => {
-    // const body = {
-    //   email: emailValue,
-    //   password: passwordValue,
-    // };
+    const body = {
+      email: emailValue,
+      password: passwordValue,
+    };
 
     try {
-      // const response = await api.post('/user', body);
-      const response = { token: 'hrn7u8i923ihf23978wg3289' };
-      console.log(response);
+      await api.post('/login', body);
     } catch (e) {
       setLoginResponse(false);
     }
