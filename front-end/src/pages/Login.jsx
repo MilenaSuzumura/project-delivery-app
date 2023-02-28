@@ -14,7 +14,7 @@ export default function Login() {
 
   useEffect(() => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const passwordRegex = /^.{6,}/;
+    const passwordRegex = /^\w{6,}/;
 
     if (passwordRegex.test(passwordValue) && emailRegex.test(emailValue)) {
       setLoginAvailable(true);
