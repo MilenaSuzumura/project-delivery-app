@@ -1,4 +1,4 @@
-import React from 'react';
+import { useMemo } from 'react';
 import propTypes from 'prop-types';
 import MyContext from './MyContext';
 
