@@ -1,5 +1,5 @@
 import React from 'react';
-import './App.css';
+// import './App.css';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
 import Provider from './context/Provider';
