@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const registerTestId = 'common_register__';
 
@@ -12,14 +12,14 @@ export default function Register() {
 
   useEffect(() => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const passwordRegex = /^\w{6}/;
-    const nameRegex = /^.{0,12}$/;
+    const passwordRegex = /^.{6,}/;
+    const nameRegex = /^.{12,}/;
 
-    if (
-      passwordRegex.test(passwordValue)
-      && emailRegex.test(emailValue)
-      && nameRegex.test(nameValue)
-    ) {
+    const canSignIn = nameRegex.test(nameValue)
+    && emailRegex.test(emailValue)
+    && passwordRegex.test(passwordValue);
+
+    if (canSignIn) {
       setRegisterAvailable(true);
     } else {
       setRegisterAvailable(false);
