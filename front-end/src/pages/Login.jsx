@@ -10,7 +10,7 @@ export default function Login() {
   const [emailValue, setEmailValue] = useState('');
   const [passwordValue, setPasswordValue] = useState('');
   const [loginResponse, setLoginResponse] = useState(true);
-  const [loginAvailable, setLoginAvailable] = useState(false);
+  const [isLoginAvailable, setLoginAvailable] = useState(false);
 
   useEffect(() => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -62,7 +62,7 @@ export default function Login() {
           type="submit"
           onClick={ () => login() }
           data-testid={ `${loginTestId}button-login` }
-          disabled={ !loginAvailable }
+          disabled={ !isLoginAvailable }
         >
           LOGIN
         </button>
