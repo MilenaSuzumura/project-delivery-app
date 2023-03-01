@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-const roleProducts = "customer_products";
+const roleProducts = 'customer_products__element-navbar-';
 
 function NavBar({ userInfos }) {
   const logOut = () => {
@@ -14,35 +14,35 @@ function NavBar({ userInfos }) {
   return (
     <ul className="navBar">
       <li>
-        <a
-          data-testid={ `${roleProducts}__element-navbar-link-products` }
-          onClick={ () => changeURL("/customer/products") }
+        <button
+          data-testid={ `${roleProducts}link-products` }
+          onClick={ () => changeURL('/customer/products') }
         >
           PRODUTOS
-        </a>
+        </button>
       </li>
       <li>
-        <a
-          data-testid={ `${roleProducts}__element-navbar-link-orders` }
-          onClick={ () => changeURL("/customer/orders") }
+        <button
+          data-testid={ `${roleProducts}link-orders` }
+          onClick={ () => changeURL('/customer/orders') }
         >
           MEUS PEDIDOS
-        </a>
+        </button>
       </li>
       <li>
-        <a
-          data-testid={ `${roleProducts}__element-navbar-user-full-name` }
+        <button
+          data-testid={ `${roleProducts}user-full-name` }
         >
           { userInfos.name }
-        </a>
+        </button>
       </li>
       <li>
-        <a
-          data-testid={ `${roleProducts}__element-navbar-link-logout` }
+        <button
+          data-testid={ `${roleProducts}link-logout` }
           onClick={ () => logOut() }
         >
           Sair
-        </a>
+        </button>
       </li>
     </ul>
   );
