@@ -26,9 +26,9 @@ const register = async (name, email, password) => {
     return { type: 'CONFLICT', message: 'Conflict' };
   }
 
-  await User.create({ name, email, password: md5(password), role: 'customer' });
+  const newUser = await User.create({ name, email, password: md5(password), role: 'customer' });
 
-  return { type: null, message: 'Created' };
+  return { type: null, message: newUser };
 };
 
 module.exports = { login, register };

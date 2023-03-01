@@ -19,7 +19,7 @@ const register = async (req, res) => {
     return res.status(409).json({ message });
   }
 
-  return res.status(201).json({ message });
+  return res.status(201).json(message);
 };
 
 module.exports = { login, register };
