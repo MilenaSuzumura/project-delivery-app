@@ -34,7 +34,6 @@ export default function Register() {
       name: nameValue,
       email: emailValue,
       password: passwordValue,
-      role: 'customer',
     };
 
     const headers = { 'Content-Type': 'application/json' };
