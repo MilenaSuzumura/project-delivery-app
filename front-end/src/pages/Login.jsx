@@ -1,7 +1,6 @@
+import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-
-import api from '../utils/api';
 
 const loginTestId = 'common_login__';
 
@@ -10,11 +9,12 @@ export default function Login() {
   const [emailValue, setEmailValue] = useState('');
   const [passwordValue, setPasswordValue] = useState('');
   const [loginResponse, setLoginResponse] = useState(true);
-  const [isLoginAvailable, setLoginAvailable] = useState(false);
+  const [loginAvailable, setLoginAvailable] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const passwordRegex = /^\w{6,}/;
+    const passwordRegex = /^.{6}/;
 
     if (passwordRegex.test(passwordValue) && emailRegex.test(emailValue)) {
       setLoginAvailable(true);
@@ -29,15 +29,21 @@ export default function Login() {
       password: passwordValue,
     };
 
+    const headers = { 'Content-Type': 'application/json' };
+
     try {
-      await api.post('/login', body);
+      await axios({
+        method: 'post',
+        url: 'http://localhost:3001/login',
+        data: body,
+        headers,
+      });
+
+      history.push('/customer/products');
     } catch (e) {
+      setErrorMessage(e.message);
       setLoginResponse(false);
     }
-  };
-
-  const redirect = () => {
-    history.push('/register');
   };
 
   return (
@@ -59,16 +65,16 @@ export default function Login() {
           data-testid={ `${loginTestId}input-password` }
         />
         <button
-          type="submit"
+          type="button"
           onClick={ () => login() }
           data-testid={ `${loginTestId}button-login` }
-          disabled={ !isLoginAvailable }
+          disabled={ !loginAvailable }
         >
           LOGIN
         </button>
         <button
           type="button"
-          onClick={ () => redirect() }
+          onClick={ () => history.push('/register') }
           data-testid={ `${loginTestId}button-register` }
         >
           Ainda não tenho conta
@@ -79,7 +85,7 @@ export default function Login() {
           <text
             data-testid={ `${loginTestId}element-invalid-email` }
           >
-            Elemento oculto (Mensagens de erro)
+            {errorMessage}
           </text>
         )
       }
