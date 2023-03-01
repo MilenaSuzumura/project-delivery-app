@@ -20,7 +20,10 @@ const login = async (email, password) => {
 };
 
 const register = async (name, email, password) => {
-  const user = await User.findOne({ where: { email } });
+  const user = await User.findOne({
+    where: { email, password: md5(password) },
+    attributes: { exclude: ['password', 'id'] },
+  });
 
   if (user) {
     return { type: 'CONFLICT', message: 'Conflict' };
@@ -28,7 +31,10 @@ const register = async (name, email, password) => {
 
   const newUser = await User.create({ name, email, password: md5(password), role: 'customer' });
 
-  return { type: null, message: newUser };
+  const { password: _, id, ...data } = newUser.dataValues;
+  const token = create(data);
+
+  return { type: null, message: { ...data, token } };
 };
 
 module.exports = { login, register };
