@@ -9,12 +9,13 @@ function NavBar({ userInfos }) {
 
   const changeURL = (route) => {
     history.push(route);
-  }
+  };
 
   return (
     <ul className="navBar">
       <li>
         <button
+          type="button"
           data-testid={ `${roleProducts}link-products` }
           onClick={ () => changeURL('/customer/products') }
         >
@@ -23,6 +24,7 @@ function NavBar({ userInfos }) {
       </li>
       <li>
         <button
+          type="button"
           data-testid={ `${roleProducts}link-orders` }
           onClick={ () => changeURL('/customer/orders') }
         >
@@ -31,6 +33,7 @@ function NavBar({ userInfos }) {
       </li>
       <li>
         <button
+          type="button"
           data-testid={ `${roleProducts}user-full-name` }
         >
           { userInfos.name }
@@ -38,6 +41,7 @@ function NavBar({ userInfos }) {
       </li>
       <li>
         <button
+          type="button"
           data-testid={ `${roleProducts}link-logout` }
           onClick={ () => logOut() }
         >
@@ -47,4 +51,12 @@ function NavBar({ userInfos }) {
     </ul>
   );
 }
+
+Component.propTypes = {
+  userInfos: React.PropTypes.shape({
+    name: React.PropTypes.string.isRequired,
+    role: React.PropTypes.string.isRequired,
+  }),
+};
+
 export default NavBar;
