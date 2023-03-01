@@ -19,4 +19,16 @@ const login = async (email, password) => {
   return { type: null, message: token };
 };
 
-module.exports = { login };
+const register = async (name, email, password, role) => {
+  const user = await User.findOne({ where: { email } });
+
+  if (user) {
+    return { type: 'CONFLICT', message: 'Conflict' };
+  }
+
+  await User.create({ name, email, password: md5(password), role });
+
+  return { type: null, message: 'Created' };
+};
+
+module.exports = { login, register };

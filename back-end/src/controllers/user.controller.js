@@ -11,4 +11,15 @@ const login = async (req, res) => {
   return res.status(200).json(message);
 };
 
-module.exports = { login };
+const register = async (req, res) => {
+  const { name, email, password, role } = req.body;
+  const { type, message } = await userService.register(name, email, password, role);
+
+  if (type) {
+    return res.status(409).json({ message });
+  }
+
+  return res.status(201).json({ message });
+};
+
+module.exports = { login, register };
