@@ -12,8 +12,8 @@ const login = async (req, res) => {
 };
 
 const register = async (req, res) => {
-  const { name, email, password, role } = req.body;
-  const { type, message } = await userService.register(name, email, password, role);
+  const { name, email, password } = req.body;
+  const { type, message } = await userService.register(name, email, password);
 
   if (type) {
     return res.status(409).json({ message });

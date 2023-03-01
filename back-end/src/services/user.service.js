@@ -19,14 +19,14 @@ const login = async (email, password) => {
   return { type: null, message: token };
 };
 
-const register = async (name, email, password, role) => {
+const register = async (name, email, password) => {
   const user = await User.findOne({ where: { email } });
 
   if (user) {
     return { type: 'CONFLICT', message: 'Conflict' };
   }
 
-  await User.create({ name, email, password: md5(password), role });
+  await User.create({ name, email, password: md5(password) });
 
   return { type: null, message: 'Created' };
 };
