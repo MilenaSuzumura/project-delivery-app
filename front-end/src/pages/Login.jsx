@@ -39,9 +39,12 @@ export default function Login() {
         data: body,
         headers,
       });
-      const { role } = response.data.user;
-      if (role === CUSTOMER) {
-        history.push('/customer/products');
+      // user = { name, email, role}
+      const { user } = response.data;
+
+      if (user.role === CUSTOMER) {
+        localStorage.setItem('user', JSON.stringify(user));
+        // history.push('/customer/products');
       }
     } catch (e) {
       setErrorMessage(e.message);
