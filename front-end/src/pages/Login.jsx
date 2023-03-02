@@ -40,11 +40,13 @@ export default function Login() {
         headers,
       });
       // user = { name, email, role}
-      const { user } = response.data;
+      const { data } = response;
+      const { user, token } = data;
 
       if (user.role === CUSTOMER) {
+        localStorage.setItem('authorization', token);
         localStorage.setItem('user', JSON.stringify(user));
-        // history.push('/customer/products');
+        history.push('/customer/products');
       }
     } catch (e) {
       setErrorMessage(e.message);
