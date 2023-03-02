@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 
-const roleProducts = 'customer_products__element-navbar-';
+const ROLE_PRODUCTS = 'customer_products__element-navbar-';
 
 function NavBar({ userInfos }) {
   const history = useHistory();
@@ -20,7 +20,7 @@ function NavBar({ userInfos }) {
       <li>
         <button
           type="button"
-          data-testid={ `${roleProducts}link-products` }
+          data-testid={ `${ROLE_PRODUCTS}link-products` }
           onClick={ () => changeURL('/customer/products') }
         >
           PRODUTOS
@@ -29,7 +29,7 @@ function NavBar({ userInfos }) {
       <li>
         <button
           type="button"
-          data-testid={ `${roleProducts}link-orders` }
+          data-testid={ `${ROLE_PRODUCTS}link-orders` }
           onClick={ () => changeURL('/customer/orders') }
         >
           MEUS PEDIDOS
@@ -38,7 +38,7 @@ function NavBar({ userInfos }) {
       <li>
         <button
           type="button"
-          data-testid={ `${roleProducts}user-full-name` }
+          data-testid={ `${ROLE_PRODUCTS}user-full-name` }
         >
           { userInfos.name }
         </button>
@@ -46,7 +46,7 @@ function NavBar({ userInfos }) {
       <li>
         <button
           type="button"
-          data-testid={ `${roleProducts}link-logout` }
+          data-testid={ `${ROLE_PRODUCTS}link-logout` }
           onClick={ () => logOut() }
         >
           Sair
