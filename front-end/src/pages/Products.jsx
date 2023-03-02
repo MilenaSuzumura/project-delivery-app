@@ -11,36 +11,33 @@ const totalPrice = 0;
 
 function Products() {
   const [products, setProducts] = useState([]);
-  const [userInfos, setUserInfos] = useState();
 
-  useEffect(() => {
-    const name = getFromLocalStorage('user', 'name');
-    const role = getFromLocalStorage('user', 'role');
+  const name = getFromLocalStorage('user', 'name');
+  const role = getFromLocalStorage('user', 'role');
+  const userInfos = { name, role };
 
-    setUserInfos({ name, role });
-  }, []);
-
-  useEffect(() => {
+  const fetch = async () => {
     const headers = {
       'Content-Type': 'application/json',
     };
 
-    const fetch = async () => {
-      const response = await axios({
-        method: 'get',
-        url: 'http://localhost:3001/customer/products',
-        headers,
-      });
+    const response = await axios({
+      method: 'get',
+      url: 'http://localhost:3001/customer/products',
+      headers,
+    });
 
-      return response;
-    };
+    return response;
+  };
 
+  const response = fetch();
+
+  useEffect(() => {
     try {
-      const response = fetch();
-      const { productsList } = response.data;
-      setProducts(productsList);
+      console.log(response);
+      setProducts([]);
     } catch (e) {
-      setErrorMessage(e.message);
+      console.log(e);
     }
   }, []);
 
