@@ -1,29 +1,14 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import propTypes from 'prop-types';
 import MyContext from './MyContext';
-import getFromLocalStorage from '../utils/localStorage';
 
 function Provider({ children }) {
-  const [token, setToken] = useState(getFromLocalStorage('token'));
-  const [userName, setUserName] = useState(getFromLocalStorage('user', 'name'));
-  const [userRole, setUserRole] = useState(getFromLocalStorage('user', 'role'));
+  // const [token, setToken] = useState(getFromLocalStorage('token'));
 
   const contextValue = useMemo(() => (
     {
-      userName,
-      setUserName,
-      userRole,
-      setUserRole,
-      token,
-      setToken,
     }
   ), [
-    userName,
-    setUserName,
-    userRole,
-    setUserRole,
-    token,
-    setToken,
   ]);
 
   return (
