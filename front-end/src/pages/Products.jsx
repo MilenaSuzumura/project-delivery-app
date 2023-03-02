@@ -1,21 +1,26 @@
 import React, { useEffect, useState } from 'react';
+
 import NavBar from '../components/NavBar';
+import ProductCard from '../components/ProductCard'
 
 const userInfos = {
-  name: 'temp',
-  role: 'customer',
+  name: localStorage.getItem('name'),
+  role: localStorage.getItem('role'),
 };
 
 function Products() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    const headers = { 'Content-Type': 'application/json' };
+    const headers = {
+      'Content-Type': 'application/json',
+      // 'autorization': localStorage.getItem('token'),
+    };
 
     try {
       const response = await axios({
         method: 'get',
-        url: 'http://localhost:3001/products',
+        url: 'http://localhost:3001/customer/products',
         headers,
       });
       const { productsList } = response.data;
@@ -30,9 +35,9 @@ function Products() {
       <NavBar userInfos={ userInfos } />
       <ul>
         {
-          products.map(() => {
+          products.map((product) => {
             <li>
-
+              <ProductCard product={ product } />
             </li>   
           })
         }
@@ -41,35 +46,3 @@ function Products() {
   );
 }
 export default Products;
-
-/*
-  const login = async () => {
-    const body = {
-      email: emailValue,
-      password: passwordValue,
-    };
-
-    const headers = { 'Content-Type': 'application/json' };
-
-    try {
-      const response = await axios({
-        method: 'post',
-        url: 'http://localhost:3001/login',
-        data: body,
-        headers,
-      });
-      // user = { name, email, role}
-      const { user } = response.data;
-
-      if (user.role === CUSTOMER) {
-        localStorage.setItem('user', JSON.stringify(user));
-        // history.push('/customer/products');
-      }
-    } catch (e) {
-      setErrorMessage(e.message);
-      setLoginResponse(false);
-    }
-  };
-*/
-
-// localStorage.getItem('role');
