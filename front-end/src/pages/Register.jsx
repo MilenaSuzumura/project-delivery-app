@@ -89,7 +89,7 @@ export default function Register() {
       {
         !registerResponse && (
           <text
-            data-testid={ `${registerTestId}element-invalid-email` }
+            data-testid={ `${registerTestId}element-invalid_register` }
           >
             {errorMessage}
           </text>
