@@ -1,8 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
 
 const roleProducts = 'customer_products__element-navbar-';
 
 function NavBar({ userInfos }) {
+  const history = useHistory();
+
   const logOut = () => {
     console.log(1);
   };
@@ -52,11 +56,11 @@ function NavBar({ userInfos }) {
   );
 }
 
-Component.propTypes = {
-  userInfos: React.PropTypes.shape({
-    name: React.PropTypes.string.isRequired,
-    role: React.PropTypes.string.isRequired,
-  }),
+NavBar.propTypes = {
+  userInfos: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    role: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 export default NavBar;
