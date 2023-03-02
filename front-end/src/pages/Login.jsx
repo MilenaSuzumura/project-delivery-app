@@ -40,12 +40,15 @@ export default function Login() {
         headers,
       });
       // user = { name, email, role}
-      const { data } = response;
-      const { user, token } = data;
+      const { data: { user, token } } = response;
 
       if (user.role === CUSTOMER) {
-        localStorage.setItem('authorization', token);
-        localStorage.setItem('user', JSON.stringify(user));
+        const dataToSave = {
+          token,
+          ...user,
+        };
+
+        localStorage.setItem('user', JSON.stringify(dataToSave));
         history.push('/customer/products');
       }
     } catch (e) {

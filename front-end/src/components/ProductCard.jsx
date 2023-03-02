@@ -34,19 +34,19 @@ function ProductCard({ key, product }) {
       <button
         data-testid={ `${CUSTOMER_PRODUCT}button-card-rm-item-${id}` }
         type="button"
-        onClick={ setItemAmount((prev) => prev - 1) }
+        onClick={ setItemAmount(itemAmount > 0 ? itemAmount - 1 : 0) }
       >
         -
       </button>
       <input
         data-testid={ `${CUSTOMER_PRODUCT}input-card-quantity-${id}` }
         value={ carItem.itemAmount }
-        onChange={ (e) => setItemAmount(e.target.value) }
+        onChange={ (e) => setItemAmount(e.target.value >= 0 ? e.target.value : 0) }
       />
       <button
         data-testid={ `${CUSTOMER_PRODUCT}button-card-add-item-${id}` }
         type="button"
-        onClick={ setItemAmount((prev) => prev + 1) }
+        onClick={ setItemAmount(itemAmount + 1) }
       >
         +
       </button>

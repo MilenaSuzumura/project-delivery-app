@@ -5,24 +5,24 @@ import NavBar from '../components/NavBar';
 import ProductCard from '../components/ProductCard';
 import getFromLocalStorage from '../utils/localStorage';
 
+const ROLE_PRODUCTS = 'customer_products__';
+
+const totalPrice = 0;
+
 function Products() {
   const [products, setProducts] = useState([]);
   const [userInfos, setUserInfos] = useState();
-  // const [authorization, setAuthorization] = useState('');
 
   useEffect(() => {
-    // const token = getFromLocalStorage('token');
     const name = getFromLocalStorage('user', 'name');
     const role = getFromLocalStorage('user', 'role');
 
-    // setAuthorization(token);
     setUserInfos({ name, role });
   }, []);
 
   useEffect(() => {
     const headers = {
       'Content-Type': 'application/json',
-      // authorization,
     };
 
     const fetch = async () => {
@@ -57,6 +57,14 @@ function Products() {
           ))
         }
       </ul>
+      <button
+        type="button"
+        data-testid={ `${ROLE_PRODUCTS}Sbutton-cart` }
+      >
+        { `Ver Carrinho: R$ ${
+          <p data-testid={ `${ROLE_PRODUCTS}checkout-bottom-value` }>{ totalPrice }</p>
+        }` }
+      </button>
     </div>
   );
 }
