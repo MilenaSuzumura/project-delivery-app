@@ -1,36 +1,43 @@
 const customerProductsService = require('../services/customer-products.service');
 
 const getAll = async (_req, res) => {
-  const productsAll = await customerProductsService.getAll();
-  return res.status(200).json(productsAll);
-};
+  const { message } = await customerProductsService.getAll();
 
-const created = async (req, res) => {
-  const createProduct = await customerProductsService.created(req.body);
-  return res.status(201).json(createProduct);
+  return res.status(200).json(message);
 };
 
 const getById = async (req, res) => {
-  const productId = await customerProductsService.getById(req.params.id);
-  return res.status(200).json(productId);
-};
-
-const updated = async (req, res) => {
-  const { name, price, urlImage } = req.body;
   const { id } = req.params;
-  const up = await customerProductsService.updated(id, name, price, urlImage);
-  return res.status(200).json(up);
+  const { message } = await customerProductsService.getById(id);
+
+  return res.status(200).json(message);
 };
 
-const deleted = async (req, res) => {
-  const delProduct = await customerProductsService.deleted(req.params.id);
-  return res.status(204).json(delProduct);
+const create = async (req, res) => {
+  const { message } = await customerProductsService.create(req.body);
+
+  return res.status(201).json(message);
+};
+
+const update = async (req, res) => {
+  const { id } = req.params;
+  const { name, price, urlImage } = req.body;
+  const { message } = await customerProductsService.update(id, name, price, urlImage);
+
+  return res.status(200).json({ message });
+};
+
+const deleteProduct = async (req, res) => {
+  const { id } = req.params;
+  const { message } = await customerProductsService.deleteProduct(id);
+
+  return res.status(202).json({ message });
 };
 
 module.exports = {
   getAll,
-  created,
   getById,
-  updated,
-  deleted,
+  create,
+  update,
+  deleteProduct,
 };

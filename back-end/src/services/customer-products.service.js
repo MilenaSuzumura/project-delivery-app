@@ -1,31 +1,39 @@
 const { Product } = require('../database/models');
 
-const getAll = async () => Product.findAll();
+const getAll = async () => {
+  const products = await Product.findAll();
 
-const created = async (obj) => {
-  const createProduct = await Product.create(obj);
-  return createProduct;
+  return { message: products };
 };
 
 const getById = async (id) => {
-  const byId = await Product.findByPk(id);
-  return byId;
+  const product = await Product.findByPk(id);
+
+  return { message: product };
 };
 
-const updated = async (id, name, price, urlImage) => {
-  const up = await Product.update({ name, price, urlImage }, { where: { id } });
-  return up;
-};  
+const create = async (obj) => {
+  const newProduct = await Product.create(obj);
 
-const deleted = async (id) => {
-  const delProduct = await Product.destroy({ where: { id } });
-  return delProduct;
+  return { message: newProduct };
+};
+
+const update = async (id, name, price, urlImage) => {
+  await Product.update({ name, price, urlImage }, { where: { id } });
+
+  return { message: 'Product updated' };
+};
+
+const deleteProduct = async (id) => {
+  await Product.destroy({ where: { id } });
+
+  return { message: 'Product deleted' };
 };
 
 module.exports = {
   getAll,
-  created,
   getById,
-  updated,
-  deleted,
+  create,
+  update,
+  deleteProduct,
 };
