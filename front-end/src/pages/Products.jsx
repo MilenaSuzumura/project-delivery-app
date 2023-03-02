@@ -16,7 +16,7 @@ function Products() {
   const role = getFromLocalStorage('user', 'role');
   const userInfos = { name, role };
 
-  const fetch = async () => {
+  useEffect(async () => {
     const headers = {
       'Content-Type': 'application/json',
     };
@@ -26,13 +26,6 @@ function Products() {
       url: 'http://localhost:3001/customer/products',
       headers,
     });
-
-    return response;
-  };
-
-  const response = fetch();
-
-  useEffect(() => {
     try {
       console.log(response);
       setProducts([]);
