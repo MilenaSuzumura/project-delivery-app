@@ -1,14 +1,17 @@
+import axios from 'axios';
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 
 const registerTestId = 'common_register__';
 
 export default function Register() {
+  const history = useHistory();
   const [nameValue, setNameValue] = useState('');
   const [emailValue, setEmailValue] = useState('');
   const [passwordValue, setPasswordValue] = useState('');
-
   const [registerResponse, setRegisterResponse] = useState(true);
   const [isRegisterAvailable, setRegisterAvailable] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -26,9 +29,28 @@ export default function Register() {
     }
   }, [nameValue, emailValue, passwordValue]);
 
-  const register = () => {
-    console.log('ME IMPLMENTA!!!');
-    setRegisterResponse(false);
+  const register = async () => {
+    const body = {
+      name: nameValue,
+      email: emailValue,
+      password: passwordValue,
+    };
+
+    const headers = { 'Content-Type': 'application/json' };
+
+    try {
+      await axios({
+        method: 'post',
+        url: 'http://localhost:3001/register',
+        data: body,
+        headers,
+      });
+
+      history.push('/customer/products');
+    } catch (e) {
+      setErrorMessage(e.message);
+      setRegisterResponse(false);
+    }
   };
 
   return (
@@ -56,7 +78,7 @@ export default function Register() {
           data-testid={ `${registerTestId}input-password` }
         />
         <button
-          type="submit"
+          type="button"
           onClick={ () => register() }
           data-testid={ `${registerTestId}button-register` }
           disabled={ !isRegisterAvailable }
@@ -67,9 +89,9 @@ export default function Register() {
       {
         !registerResponse && (
           <text
-            data-testid={ `${registerTestId}element-invalid-email` }
+            data-testid={ `${registerTestId}element-invalid_register` }
           >
-            Elemento oculto (Mensagens de erro)
+            {errorMessage}
           </text>
         )
       }
