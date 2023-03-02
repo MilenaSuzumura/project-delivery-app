@@ -1,15 +1,16 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import propTypes from 'prop-types';
 import MyContext from './MyContext';
+import { getName } from '../utils/localStorage';
 
 function Provider({ children }) {
-  // const [email, setEmail] = useState();
+  const [userName, setUserName] = useState(getName('user'));
 
   const contextValue = useMemo(() => (
     // { email, setEmail }
-    {}
-    // [email]
-  ), []);
+    { userName, setUserName }
+    // [email, setEmail]
+  ), [userName, setUserName]);
 
   return (
     <MyContext.Provider value={ contextValue }>
