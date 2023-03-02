@@ -1,13 +1,11 @@
-const getName = (userString) => {
-  const data = localStorage.getItem(userString);
+const getFromLocalStorage = (keyFromLocalStorage, objKey = undefined) => {
+  const data = localStorage.getItem(keyFromLocalStorage);
 
   if (!data) return '';
+  if (!objKey) return data;
 
-  const user = JSON.parse(data);
-  console.log(user.name);
-  return user.name;
+  const obj = JSON.parse(data);
+  return obj[objKey];
 };
 
-const teste = '';
-
-export { getName, teste };
+export default getFromLocalStorage;
