@@ -8,7 +8,7 @@ const duplicated = '/customer/products/:id';
 route.get('/customer/products', customerProductsController.getAll);
 route.post('/customer/products', customerProductsController.created);
 route.get(duplicated, customerProductsController.getById);
-// route.put(duplicated, customerProductsController.updated);
+route.put(duplicated, customerProductsController.updated);
 route.delete(duplicated, customerProductsController.deleted);
 
 module.exports = route;

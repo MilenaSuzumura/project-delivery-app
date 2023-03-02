@@ -16,7 +16,9 @@ const getById = async (req, res) => {
 };
 
 const updated = async (req, res) => {
-  const up = customerProductsService.updated(req.params.id);
+  const { name, price, urlImage } = req.body;
+  const { id } = req.params;
+  const up = await customerProductsService.updated(id, name, price, urlImage);
   return res.status(200).json(up);
 };
 

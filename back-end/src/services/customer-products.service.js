@@ -12,15 +12,10 @@ const getById = async (id) => {
   return byId;
 };
 
-// const updated = async (id) => {
-//   const byId = await Product.findByPk(id);
-//   if (!byId) {
-//     throw new Error({ message: 'Not exist' });
-//   } else {
-//     await byId.update({ name, price, urlImage }, { where: { id } });
-//   }
-  
-// };
+const updated = async (id, name, price, urlImage) => {
+  const up = await Product.update({ name, price, urlImage }, { where: { id } });
+  return up;
+};  
 
 const deleted = async (id) => {
   const delProduct = await Product.destroy({ where: { id } });
@@ -31,6 +26,6 @@ module.exports = {
   getAll,
   created,
   getById,
-  // updated,
+  updated,
   deleted,
 };
