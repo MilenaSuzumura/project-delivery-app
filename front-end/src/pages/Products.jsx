@@ -22,13 +22,13 @@ function Products() {
         'Content-Type': 'application/json',
       };
 
-      const response = await axios({
+      const { data } = await axios({
         method: 'get',
         url: 'http://localhost:3001/customer/products',
         headers,
       });
       try {
-        setProducts(response);
+        setProducts(data);
       } catch (e) {
         console.log(e);
       }
@@ -36,28 +36,35 @@ function Products() {
     getProducts();
   }, []);
 
-  return (
-    <div className="products">
-      <NavBar userInfos={ userInfos } />
-      <ul>
-        {
-          products.map((product, index) => (
-            <ProductCard
-              key={ `product-${index}` }
-              product={ product }
-            />
-          ))
-        }
-      </ul>
-      <button
-        type="button"
-        data-testid={ `${ROLE_PRODUCTS}Sbutton-cart` }
-      >
-        { `Ver Carrinho: R$ ${
-          <p data-testid={ `${ROLE_PRODUCTS}checkout-bottom-value` }>{ totalPrice }</p>
-        }` }
-      </button>
-    </div>
-  );
+  if (products) {
+    return (
+      <div className="products">
+        <NavBar userInfos={ userInfos } />
+        <ul>
+          {
+            products.map((product) => (
+              <ProductCard
+                key={ product.id }
+                product={ product }
+              />
+            ))
+          }
+        </ul>
+        <button
+          type="button"
+          data-testid={ `${ROLE_PRODUCTS}Sbutton-cart` }
+        >
+          {`Ver Carrinho: R$ ${
+            <p
+              data-testid={ `${ROLE_PRODUCTS}checkout-bottom-value` }
+            >
+              {totalPrice}
+
+            </p>}`}
+        </button>
+      </div>
+    );
+  }
 }
+
 export default Products;
