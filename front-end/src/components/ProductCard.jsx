@@ -9,28 +9,32 @@ function ProductCard({ product }) {
   const [itemAmount, setItemAmount] = useState(0);
 
   const handleInput = ({ target: { value } }) => {
-    if (value >= 0) setItemAmount(value);
+    if (value >= 0) setItemAmount(Math.floor(Number(value)));
   };
 
   return (
     <li className="productCard">
       <p
         data-testid={ `${CUSTOMER_PRODUCT}element-card-price-${id}` }
-        value={ `R$ ${price}` }
-      />
+      >
+        { `R$ ${price}` }
+      </p>
       <img
+        width={ 100 }
+        height={ 100 }
         data-testid={ `${CUSTOMER_PRODUCT}img-card-bg-image-${id}` }
         src={ urlImage }
         alt={ name }
       />
       <p
         data-testid={ `${CUSTOMER_PRODUCT}element-card-title-${id}` }
-        value={ name }
-      />
+      >
+        { name }
+      </p>
       <button
         data-testid={ `${CUSTOMER_PRODUCT}button-card-rm-item-${id}` }
         type="button"
-        onClick={ () => setItemAmount(itemAmount > 0 ? itemAmount - 1 : 0) }
+        onClick={ () => setItemAmount(itemAmount > 0 ? Number(itemAmount - 1) : 0) }
       >
         -
       </button>
@@ -42,7 +46,7 @@ function ProductCard({ product }) {
       <button
         data-testid={ `${CUSTOMER_PRODUCT}button-card-add-item-${id}` }
         type="button"
-        onClick={ () => setItemAmount(itemAmount + 1) }
+        onClick={ () => setItemAmount(Number(itemAmount + 1)) }
       >
         +
       </button>
