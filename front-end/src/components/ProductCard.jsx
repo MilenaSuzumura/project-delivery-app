@@ -6,12 +6,10 @@ const CUSTOMER_PRODUCT = 'customer_products__';
 function ProductCard({ product }) {
   const { id, name, price, urlImage } = product;
 
-  // const urlImage = 'https://www.receiteria.com.br/wp-content/uploads/aperol-spritz-2-730x450.jpg';
-
   const [itemAmount, setItemAmount] = useState(0);
 
-  const handleInput = () => {
-    console.log('ME IMPLMENTA!!!');
+  const handleInput = ({ target: { value } }) => {
+    if (value >= 0) setItemAmount(value);
   };
 
   return (
@@ -53,7 +51,6 @@ function ProductCard({ product }) {
 }
 
 ProductCard.propTypes = {
-  // key: PropTypes.string.isRequired,
   product: PropTypes.shape({
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
