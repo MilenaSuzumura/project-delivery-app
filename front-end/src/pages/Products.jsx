@@ -16,7 +16,7 @@ function Products() {
   const role = getFromLocalStorage('user', 'role');
   const userInfos = { name, role };
 
-  useEffect(async () => {
+  const getProducts = async () => {
     const headers = {
       'Content-Type': 'application/json',
     };
@@ -27,11 +27,14 @@ function Products() {
       headers,
     });
     try {
-      console.log(response);
-      setProducts([]);
+      setProducts(response);
     } catch (e) {
       console.log(e);
     }
+  };
+
+  useEffect(async () => {
+    await getProducts();
   }, []);
 
   return (
