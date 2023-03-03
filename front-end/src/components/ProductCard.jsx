@@ -29,7 +29,8 @@ function ProductCard({ product }) {
     itemToUpdate.itemAmount = itemAmount;
 
     localStorage.setItem('carItems', JSON.stringify(carItems));
-    console.log(carItems);
+
+    window.dispatchEvent(new Event('storage'));
   }, [itemAmount, name]);
 
   return (

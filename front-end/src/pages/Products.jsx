@@ -7,14 +7,29 @@ import getFromLocalStorage from '../utils/localStorage';
 
 const ROLE_PRODUCTS = 'customer_products__';
 
-const totalPrice = 0;
-
 function Products() {
   const [products, setProducts] = useState([]);
 
   const name = getFromLocalStorage('user', 'name');
   const role = getFromLocalStorage('user', 'role');
+
+  const [totalPrice, setTotalPrice] = useState(localStorage.getItem('myKey'));
+
   const userInfos = { name, role };
+
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const carItems = JSON.parse(localStorage.getItem('carItems'));
+
+      let total = 0;
+      carItems.forEach((item) => {
+        total += (item.itemAmount * item.price);
+      });
+      setTotalPrice(total);
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+  }, []);
 
   useEffect(() => {
     const getProducts = async () => {
