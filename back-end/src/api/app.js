@@ -1,11 +1,9 @@
 const express = require('express');
 
 const userRouter = require('../routers/user.router');
-const customerProductsRouter = require('../routers/customer-products.router');
+const customerProductsRouter = require('../routers/customer.router');
 
 const app = express();
-
-app.use(express.json());
 
 // Função que serve para que se possa testar as requisições pelo navegador web, não influencia nos testes 
 // mas mantive comentada pois não é necessária para que os mesmos rodem.
@@ -16,6 +14,9 @@ app.use((_req, res, next) => {
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   next();
 });
+
+app.use(express.json());
+app.use(express.static('public'));
 
 app.use(userRouter);
 app.use(customerProductsRouter);
