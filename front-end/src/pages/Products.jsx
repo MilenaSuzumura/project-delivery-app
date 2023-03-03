@@ -54,13 +54,12 @@ function Products() {
           type="button"
           data-testid={ `${ROLE_PRODUCTS}Sbutton-cart` }
         >
-          {`Ver Carrinho: R$ ${
-            <p
-              data-testid={ `${ROLE_PRODUCTS}checkout-bottom-value` }
-            >
-              {totalPrice}
-
-            </p>}`}
+          <p>
+            { 'Ver Carrinho: R$ ' }
+          </p>
+          <p data-testid={ `${ROLE_PRODUCTS}checkout-bottom-value` }>
+            { totalPrice }
+          </p>
         </button>
       </div>
     );

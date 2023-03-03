@@ -30,7 +30,7 @@ export default function Login() {
       password: passwordValue,
     };
 
-    const headers = { 'Content-Type': 'application/json' };
+    const headers = { "Content-Type": 'application/json' };
 
     try {
       const response = await axios({
