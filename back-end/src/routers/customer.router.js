@@ -4,12 +4,12 @@ const customerController = require('../controllers/customer.controller');
 
 const router = express.Router();
 
-const idRoute = '/customer/products/:id';
+const idRoute = '/products/:id';
 
-router.get('/customer/products', customerController.getAllProducts);
+router.get('/products', customerController.getAllProducts);
 router.get(idRoute, customerController.getProductById);
 
-router.post('/customer/products', customerController.createProduct);
+router.post('/products', customerController.createProduct);
 
 router.put(idRoute, customerController.updateProduct);
 
