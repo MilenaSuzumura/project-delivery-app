@@ -1,24 +1,24 @@
 const { Product } = require('../database/models');
 
-const getAll = async () => {
+const getAllProducts = async () => {
   const products = await Product.findAll();
 
   return { message: products };
 };
 
-const getById = async (id) => {
+const getProductById = async (id) => {
   const product = await Product.findByPk(id);
 
   return { message: product };
 };
 
-const create = async (obj) => {
+const createProduct = async (obj) => {
   const newProduct = await Product.create(obj);
 
   return { message: newProduct };
 };
 
-const update = async (id, name, price, urlImage) => {
+const updateProduct = async (id, name, price, urlImage) => {
   await Product.update({ name, price, urlImage }, { where: { id } });
 
   return { message: 'Product updated' };
@@ -31,9 +31,9 @@ const deleteProduct = async (id) => {
 };
 
 module.exports = {
-  getAll,
-  getById,
-  create,
-  update,
+  getAllProducts,
+  getProductById,
+  createProduct,
+  updateProduct,
   deleteProduct,
 };
