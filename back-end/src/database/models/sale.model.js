@@ -14,19 +14,19 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: true,
     },
     totalPrice: {
-      type: DataTypes.DECIMAL(9, 2),
+      type: DataTypes.DECIMAL,
     },
     deliveryAddress: {
-      type: DataTypes.STRING(100),
+      type: DataTypes.STRING,
     },
     deliveryNumber: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.STRING,
     },
     saleDate: {
       type: DataTypes.DATE,
     },
     status: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.STRING,
     },
   },
   {
