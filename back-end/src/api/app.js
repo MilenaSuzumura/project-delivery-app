@@ -1,7 +1,7 @@
 const express = require('express');
 
 const userRouter = require('../routers/user.router');
-const customerProductsRouter = require('../routers/customer.router');
+const customerProductsRouter = require('../routers/customer-products.router');
 
 const app = express();
 

@@ -4,9 +4,9 @@ import PropTypes from 'prop-types';
 const CUSTOMER_PRODUCT = 'customer_products__';
 
 function ProductCard({ product }) {
-  const { id, name, price } = product;
+  const { id, name, price, urlImage } = product;
 
-  const urlImage = 'https://www.receiteria.com.br/wp-content/uploads/aperol-spritz-2-730x450.jpg';
+  // const urlImage = 'https://www.receiteria.com.br/wp-content/uploads/aperol-spritz-2-730x450.jpg';
 
   const [itemAmount, setItemAmount] = useState(0);
 
