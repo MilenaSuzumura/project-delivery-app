@@ -34,6 +34,8 @@ function Products() {
       }
     };
     getProducts();
+
+    localStorage.setItem('carItems', JSON.stringify([]));
   }, []);
 
   if (products) {

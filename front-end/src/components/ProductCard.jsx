@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 const CUSTOMER_PRODUCT = 'customer_products__';
@@ -11,6 +11,26 @@ function ProductCard({ product }) {
   const handleInput = ({ target: { value } }) => {
     if (value >= 0) setItemAmount(Math.floor(Number(value)));
   };
+
+  // did mount
+  useEffect(() => {
+    const carItems = JSON.parse(localStorage.getItem('carItems'));
+
+    carItems.push({ ...product, itemAmount: 0 });
+
+    localStorage.setItem('carItems', JSON.stringify(carItems));
+  }, [product]);
+
+  // did update
+  useEffect(() => {
+    const carItems = JSON.parse(localStorage.getItem('carItems'));
+    const itemToUpdate = carItems.find((obj) => obj.name === name);
+
+    itemToUpdate.itemAmount = itemAmount;
+
+    localStorage.setItem('carItems', JSON.stringify(carItems));
+    console.log(carItems);
+  }, [itemAmount, name]);
 
   return (
     <li className="productCard">
