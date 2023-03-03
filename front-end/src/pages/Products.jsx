@@ -16,25 +16,24 @@ function Products() {
   const role = getFromLocalStorage('user', 'role');
   const userInfos = { name, role };
 
-  const getProducts = async () => {
-    const headers = {
-      'Content-Type': 'application/json',
+  useEffect(() => {
+    const getProducts = async () => {
+      const headers = {
+        'Content-Type': 'application/json',
+      };
+
+      const response = await axios({
+        method: 'get',
+        url: 'http://localhost:3001/customer/products',
+        headers,
+      });
+      try {
+        setProducts(response);
+      } catch (e) {
+        console.log(e);
+      }
     };
-
-    const response = await axios({
-      method: 'get',
-      url: 'http://localhost:3001/customer/products',
-      headers,
-    });
-    try {
-      setProducts(response);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  useEffect(async () => {
-    await getProducts();
+    getProducts();
   }, []);
 
   return (
