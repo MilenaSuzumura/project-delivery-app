@@ -14,9 +14,10 @@ const login = async (email, password) => {
   }
 
   const { password: _, ...data } = user;
-  const token = create(data.dataValues);
+  const infoToSend = data.dataValues;
+  const token = create(infoToSend);
 
-  return { type: null, message: token };
+  return { type: null, message: { token, user: infoToSend } };
 };
 
 const register = async (name, email, password) => {
