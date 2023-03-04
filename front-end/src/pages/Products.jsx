@@ -20,7 +20,8 @@ function Products() {
 
   useEffect(() => {
     const handleStorageChange = () => {
-      const carItems = JSON.parse(localStorage.getItem('carItems'));
+      const getCarItems = () => JSON.parse(localStorage.getItem('carItems'));
+      const carItems = getCarItems();
 
       let total = 0;
       carItems.forEach((item) => {
