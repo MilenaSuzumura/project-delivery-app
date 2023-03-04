@@ -74,11 +74,9 @@ function Products() {
           onClick={ () => history.push('/customer/checkout') }
           disabled={ totalPrice === '0,00' }
         >
+          {'Ver carrinho R$: '}
           <p data-testid={ `${ROLE_PRODUCTS}checkout-bottom-value` }>
-            {'Ver carrinho R$: '}
-            {
-              totalPrice
-            }
+            { totalPrice }
           </p>
         </button>
       </div>
