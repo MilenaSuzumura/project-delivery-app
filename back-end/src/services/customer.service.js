@@ -30,6 +30,18 @@ const deleteProduct = async (id) => {
   return { message: 'Product deleted' };
 };
 
+const getAllSales = async () => {
+  const sales = await Sale.findAll();
+
+  return { message: sales };
+};
+
+const getSaleById = async (id) => {
+  const sale = await Sale.findByPk(id);
+
+  return { message: sale };
+};
+
 const createSale = async (sale) => {
   const newSale = await Sale.create(sale);
 
@@ -42,5 +54,7 @@ module.exports = {
   createProduct,
   updateProduct,
   deleteProduct,
+  getAllSales,
+  getSaleById,
   createSale,
 };

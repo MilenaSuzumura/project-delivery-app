@@ -34,6 +34,19 @@ const deleteProduct = async (req, res) => {
   return res.status(202).json({ message });
 };
 
+const getAllSales = async (_req, res) => {
+  const { message } = await customerService.getAllSales();
+
+  return res.status(200).json(message);
+};
+
+const getSaleById = async (req, res) => {
+  const { id } = req.params;
+  const { message } = await customerService.getSaleById(id);
+
+  return res.status(200).json(message);
+};
+
 const createSale = async (req, res) => {
   const { message } = await customerService.createSale(req.body);
 
@@ -46,5 +59,7 @@ module.exports = {
   createProduct,
   updateProduct,
   deleteProduct,
+  getAllSales,
+  getSaleById,
   createSale,
 };
