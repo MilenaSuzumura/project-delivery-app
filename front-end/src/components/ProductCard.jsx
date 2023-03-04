@@ -7,31 +7,43 @@ function ProductCard({ product }) {
   const { id, name, price, urlImage } = product;
 
   const [itemAmount, setItemAmount] = useState(0);
+  const [carItems] = useState([]);
+
+  // did mount
+  // useEffect(() => {
+  //   const newCarItems = carItems.push({ ...product, itemAmount: 0 });
+  //   setCarItems(newCarItems);
+
+  //   localStorage.setItem('carItems', JSON.stringify(carItems));
+  // }, [product, carItems]);
+
+  // did update
+  useEffect(() => {
+    if (!carItems.length) {
+      console.log('Array Vazio Fi');
+    } else {
+      console.log('Dentro do else');
+      const itemToUpdate = carItems.find((obj) => obj.name === name);
+
+      itemToUpdate.itemAmount = itemAmount;
+    }
+
+    // localStorage.setItem('carItems', JSON.stringify(carItems));
+
+    // window.dispatchEvent(new Event('storage'));
+  }, [itemAmount, name, carItems]);
 
   const handleInput = ({ target: { value } }) => {
     if (value >= 0) setItemAmount(Math.floor(Number(value)));
   };
 
-  // did mount
-  useEffect(() => {
-    const carItems = JSON.parse(localStorage.getItem('carItems'));
+  const handleRmInput = () => {
+    setItemAmount(itemAmount > 0 ? itemAmount - 1 : 0);
+  };
 
-    carItems.push({ ...product, itemAmount: 0 });
-
-    localStorage.setItem('carItems', JSON.stringify(carItems));
-  }, [product]);
-
-  // did update
-  useEffect(() => {
-    const carItems = JSON.parse(localStorage.getItem('carItems'));
-    const itemToUpdate = carItems.find((obj) => obj.name === name);
-
-    itemToUpdate.itemAmount = itemAmount;
-
-    localStorage.setItem('carItems', JSON.stringify(carItems));
-
-    window.dispatchEvent(new Event('storage'));
-  }, [itemAmount, name]);
+  const handleAddInput = () => {
+    setItemAmount(Number(itemAmount + 1));
+  };
 
   return (
     <li className="productCard">
@@ -55,7 +67,7 @@ function ProductCard({ product }) {
       <button
         data-testid={ `${CUSTOMER_PRODUCT}button-card-rm-item-${id}` }
         type="button"
-        onClick={ () => setItemAmount(itemAmount > 0 ? Number(itemAmount - 1) : 0) }
+        onClick={ handleRmInput }
       >
         -
       </button>
@@ -67,7 +79,7 @@ function ProductCard({ product }) {
       <button
         data-testid={ `${CUSTOMER_PRODUCT}button-card-add-item-${id}` }
         type="button"
-        onClick={ () => setItemAmount(Number(itemAmount + 1)) }
+        onClick={ handleAddInput }
       >
         +
       </button>
