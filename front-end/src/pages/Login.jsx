@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
 const loginTestId = 'common_login__';
+const CUSTOMER = 'customer';
 
 export default function Login() {
   const history = useHistory();
@@ -32,14 +33,24 @@ export default function Login() {
     const headers = { 'Content-Type': 'application/json' };
 
     try {
-      await axios({
+      const response = await axios({
         method: 'post',
         url: 'http://localhost:3001/login',
         data: body,
         headers,
       });
+      // user = { name, email, role}
+      const { data: { user, token } } = response;
 
-      history.push('/customer/products');
+      if (user.role === CUSTOMER) {
+        const dataToSave = {
+          token,
+          ...user,
+        };
+
+        localStorage.setItem('user', JSON.stringify(dataToSave));
+        history.push('/customer/products');
+      }
     } catch (e) {
       setErrorMessage(e.message);
       setLoginResponse(false);
