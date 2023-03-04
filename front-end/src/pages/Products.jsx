@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import NavBar from '../components/NavBar';
 import ProductCard from '../components/ProductCard';
@@ -8,11 +9,11 @@ import getFromLocalStorage from '../utils/localStorage';
 const ROLE_PRODUCTS = 'customer_products__';
 
 function Products() {
-  const [products, setProducts] = useState([]);
-
   const name = getFromLocalStorage('user', 'name');
   const role = getFromLocalStorage('user', 'role');
+  const history = useHistory();
 
+  const [products, setProducts] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
 
   const userInfos = { name, role };
@@ -70,6 +71,7 @@ function Products() {
         <button
           type="button"
           data-testid={ `${ROLE_PRODUCTS}button-cart` }
+          onClick={ () => history.push('/customer/checkout') }
         >
           <p>
             { 'Ver Carrinho: R$ ' }
