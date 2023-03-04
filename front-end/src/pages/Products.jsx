@@ -13,7 +13,7 @@ function Products() {
   const name = getFromLocalStorage('user', 'name');
   const role = getFromLocalStorage('user', 'role');
 
-  const [totalPrice, setTotalPrice] = useState(localStorage.getItem('myKey'));
+  const [totalPrice, setTotalPrice] = useState(0);
 
   const userInfos = { name, role };
 
@@ -69,13 +69,13 @@ function Products() {
         </ul>
         <button
           type="button"
-          data-testid={ `${ROLE_PRODUCTS}Sbutton-cart` }
+          data-testid={ `${ROLE_PRODUCTS}button-cart` }
         >
           <p>
             { 'Ver Carrinho: R$ ' }
           </p>
           <p data-testid={ `${ROLE_PRODUCTS}checkout-bottom-value` }>
-            { totalPrice }
+            { totalPrice.toFixed(2).toString().replace('.', ',') }
           </p>
         </button>
       </div>

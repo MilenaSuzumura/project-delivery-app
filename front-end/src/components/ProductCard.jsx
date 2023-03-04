@@ -38,7 +38,7 @@ function ProductCard({ product }) {
       <p
         data-testid={ `${CUSTOMER_PRODUCT}element-card-price-${id}` }
       >
-        { `R$ ${price}` }
+        { `${price.toString().replace('.', ',')}` }
       </p>
       <img
         width={ 100 }
