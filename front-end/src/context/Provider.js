@@ -3,13 +3,13 @@ import propTypes from 'prop-types';
 import MyContext from './MyContext';
 
 function Provider({ children }) {
-  // const [email, setEmail] = useState();
+  // const [token, setToken] = useState(getFromLocalStorage('token'));
 
   const contextValue = useMemo(() => (
-    // { email, setEmail }
-    {}
-    // [email]
-  ), []);
+    {
+    }
+  ), [
+  ]);
 
   return (
     <MyContext.Provider value={ contextValue }>
