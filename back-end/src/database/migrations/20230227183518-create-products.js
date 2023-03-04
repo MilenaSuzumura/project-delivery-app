@@ -10,7 +10,7 @@ module.exports = {
         primaryKey: true,
       },
       name: {
-        type: Sequelize.STRING(100),
+        type: Sequelize.STRING,
         allowNull: false,
       },
       price: {
@@ -18,7 +18,7 @@ module.exports = {
         allowNull: false,
       },
       url_image: {
-        type: Sequelize.STRING(200),
+        type: Sequelize.STRING,
         allowNull: false,
       },
     });

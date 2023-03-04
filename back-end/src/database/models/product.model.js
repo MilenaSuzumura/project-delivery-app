@@ -6,13 +6,13 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
     },
     name: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(100),
     },
     price: {
-      type: DataTypes.DECIMAL,
+      type: DataTypes.DECIMAL(4, 2),
     },
     urlImage: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(200),
     },
   },
   {

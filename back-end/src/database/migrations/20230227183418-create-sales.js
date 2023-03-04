@@ -34,22 +34,20 @@ module.exports = {
         allowNull: false,
       },
       delivery_address: {
-        type: Sequelize.STRING(100),
+        type: Sequelize.STRING,
         allowNull: false,
       },
       delivery_number: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.STRING,
         allowNull: false,
       },
       sale_date: {
         type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: Sequelize.NOW,
       },
       status: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.STRING,
         allowNull: false,
-        defaultValue: 'Pendente',
       },
     });
   },
