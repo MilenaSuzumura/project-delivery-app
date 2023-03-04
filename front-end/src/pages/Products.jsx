@@ -26,7 +26,7 @@ function Products() {
       carItems.forEach((item) => {
         total += (item.itemAmount * item.price);
       });
-      setTotalPrice(total);
+      setTotalPrice(total.toFixed(2).toString().replace('.', ','));
     };
 
     window.addEventListener('storage', handleStorageChange);
@@ -72,12 +72,13 @@ function Products() {
           type="button"
           data-testid={ `${ROLE_PRODUCTS}button-cart` }
           onClick={ () => history.push('/customer/checkout') }
+          disabled={ totalPrice === '0,00' }
         >
-          <p>
-            { 'Ver Carrinho: R$ ' }
-          </p>
           <p data-testid={ `${ROLE_PRODUCTS}checkout-bottom-value` }>
-            { totalPrice.toFixed(2).toString().replace('.', ',') }
+            {'Ver carrinho R$: '}
+            {
+              totalPrice
+            }
           </p>
         </button>
       </div>
