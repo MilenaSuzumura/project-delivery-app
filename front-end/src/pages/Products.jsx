@@ -34,6 +34,8 @@ function Products() {
   }, []);
 
   useEffect(() => {
+    localStorage.setItem('carItems', JSON.stringify([]));
+
     const getProducts = async () => {
       const headers = {
         'Content-Type': 'application/json',
@@ -51,8 +53,6 @@ function Products() {
       }
     };
     getProducts();
-
-    localStorage.setItem('carItems', JSON.stringify([]));
   }, []);
 
   if (products) {
