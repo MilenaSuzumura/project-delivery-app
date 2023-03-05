@@ -14,26 +14,26 @@ export default function Checkout() {
   const role = getFromLocalStorage('user', 'role');
   // const history = useHistory();
 
-  const [carItems, setCarItems] = useState([]);
+  const [cartItems, setCartItems] = useState([]);
   const [itemsToRender, setItemsToRender] = useState([]);
 
   const userInfos = { name, role };
-  // console.log(carItems);
+  // console.log(cartItems);
   useEffect(() => {
-    setCarItems(JSON.parse(getFromLocalStorage('carItems')));
-    const test = carItems.some((e) => e.itemAmount > 0);
+    setCartItems(JSON.parse(getFromLocalStorage('cartItems')));
+    const test = cartItems.some((e) => e.itemAmount > 0);
     console.log(test);
     if (test) {
-      const filteredItems = carItems.filter((carItem) => carItem.itemAmount > 0);
+      const filteredItems = cartItems.filter((cartItem) => cartItem.itemAmount > 0);
       setItemsToRender(filteredItems);
     }
-  }, [carItems]);
+  }, [cartItems]);
 
   return (
     <div className="checkout">
       <NavBar userInfos={ userInfos } />
-      { itemsToRender.map((carItem) => (
-        <OrderCard key={ carItem.id } carItems={ carItem } />
+      { itemsToRender.map((cartItem) => (
+        <OrderCard key={ cartItem.id } cartItems={ cartItem } />
       )) }
     </div>
   );

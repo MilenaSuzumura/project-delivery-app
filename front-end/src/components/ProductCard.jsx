@@ -8,7 +8,7 @@ function ProductCard({ product }) {
   const { id, name, price, urlImage } = product;
 
   const [itemAmount, setItemAmount] = useState(0);
-  const [car, setCar] = useState(JSON.parse(localStorage.getItem('carItems')));
+  const [car, setCar] = useState(JSON.parse(localStorage.getItem('cartItems')));
 
   const handleInput = ({ target: { value } }) => {
     if (value >= 0) setItemAmount(Math.floor(Number(value)));
@@ -20,7 +20,7 @@ function ProductCard({ product }) {
 
   const handleAddBtn = () => {
     setItemAmount(Number(itemAmount + 1));
-    const carItems = getFromLocalStorage('carItems');
+    const cartItems = getFromLocalStorage('cartItems');
     // if (car === []) {
     //   car.push({ teste: 'teste' });
     // }
@@ -31,13 +31,13 @@ function ProductCard({ product }) {
     // console.log(car);
     setCar([...car, { ...product, itemAmount: 0 }]);
 
-    const testFunc = () => carItems.some((e) => e.name === name);
+    const testFunc = () => cartItems.some((e) => e.name === name);
 
     if (!testFunc()) {
       console.log('entrando');
-      const teste = [...carItems, ...car];
+      const teste = [...cartItems, ...car];
       console.log(teste);
-      localStorage.setItem('carItems', JSON.stringify(teste));
+      localStorage.setItem('cartItems', JSON.stringify(teste));
     }
   };
   useEffect(() => {
@@ -45,21 +45,21 @@ function ProductCard({ product }) {
   }, [car]);
   // did mount
   // useEffect(() => {
-  //   const carItems = JSON.parse(localStorage.getItem('carItems'));
+  //   const cartItems = JSON.parse(localStorage.getItem('cartItems'));
 
-  //   carItems.push({ ...product, itemAmount: 0 });
+  //   cartItems.push({ ...product, itemAmount: 0 });
 
-  //   localStorage.setItem('carItems', JSON.stringify(carItems));
+  //   localStorage.setItem('cartItems', JSON.stringify(cartItems));
   // }, [product]);
 
   // did update
   // useEffect(() => {
-  //   const carItems = JSON.parse(localStorage.getItem('carItems'));
-  //   const itemToUpdate = carItems.find((obj) => obj.name === name);
+  //   const cartItems = JSON.parse(localStorage.getItem('cartItems'));
+  //   const itemToUpdate = cartItems.find((obj) => obj.name === name);
 
   //   itemToUpdate.itemAmount = itemAmount;
 
-  //   localStorage.setItem('carItems', JSON.stringify(carItems));
+  //   localStorage.setItem('cartItems', JSON.stringify(cartItems));
 
   //   window.dispatchEvent(new Event('storage'));
   // }, [itemAmount, name]);
