@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 const CUSTOMER_PRODUCT = 'customer_products__';
@@ -7,7 +7,7 @@ function ProductCard({ product }) {
   const { id, name, price, urlImage } = product;
 
   const [itemAmount, setItemAmount] = useState(0);
-  const [carItems] = useState([]);
+  const [carItems, setCarItems] = useState([]);
 
   // did mount
   // useEffect(() => {
@@ -43,6 +43,11 @@ function ProductCard({ product }) {
 
   const handleAddInput = () => {
     setItemAmount(Number(itemAmount + 1));
+
+    const newCarItems = [...carItems];
+    console.log(newCarItems);
+
+    setCarItems(newCarItems);
   };
 
   return (
