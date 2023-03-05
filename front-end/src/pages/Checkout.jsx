@@ -21,10 +21,10 @@ export default function Checkout() {
   // console.log(cartItems);
   useEffect(() => {
     setCartItems(JSON.parse(getFromLocalStorage('cartItems')));
-    const test = cartItems.some((e) => e.itemAmount > 0);
+    const test = cartItems.some((e) => e.quantity > 0);
     console.log(test);
     if (test) {
-      const filteredItems = cartItems.filter((cartItem) => cartItem.itemAmount > 0);
+      const filteredItems = cartItems.filter((cartItem) => cartItem.quantity > 0);
       setItemsToRender(filteredItems);
     }
   }, [cartItems]);

@@ -17,7 +17,7 @@ OrderCard.propTypes = {
     name: PropTypes.string.isRequired,
     urlImage: PropTypes.string.isRequired,
     price: PropTypes.string.isRequired,
-    itemAmount: PropTypes.number.isRequired,
+    quantity: PropTypes.number.isRequired,
   }).isRequired,
 };
 

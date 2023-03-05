@@ -15,17 +15,18 @@ function Products() {
 
   const [products, setProducts] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [cartItems, setCartItems] = useState([]);
 
   const userInfos = { name, role };
 
   useEffect(() => {
     const handleStorageChange = () => {
       const getCartItems = () => JSON.parse(localStorage.getItem('cartItems'));
-      const cartItems = getCartItems();
+      const cartItemsLocalStorage = getCartItems();
 
       let total = 0;
-      cartItems.forEach((item) => {
-        total += (item.itemAmount * item.price);
+      cartItemsLocalStorage.forEach((item) => {
+        total += (item.quantity * item.price);
       });
       setTotalPrice(total.toFixed(2).toString().replace('.', ','));
     };
@@ -55,6 +56,21 @@ function Products() {
     getProducts();
   }, []);
 
+  const addToCart = (product) => {
+    const item = cartItems.find((e) => e.id === product.id);
+
+    if (item) {
+      // Se o produto já existe no carrinho, atualiza a quantidade
+      setCartItems(cartItems.map((e) => {
+        if (e.id === product.id) { return { ...e, quantity: e.quantity + 1 }; }
+        return item;
+      }));
+    } else {
+      // Se o produto ainda não está no carrinho, adiciona um novo item
+      setCartItems([...cartItems, { ...product, quantity: 1 }]);
+    }
+  };
+
   if (products) {
     return (
       <div className="products">
@@ -65,7 +81,7 @@ function Products() {
               <ProductCard
                 key={ product.id }
                 product={ product }
-                // addToCart={}
+                addToCart={ addToCart }
               />
             ))
           }

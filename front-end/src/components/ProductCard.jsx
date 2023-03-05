@@ -1,68 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import getFromLocalStorage from '../utils/localStorage';
 
 const CUSTOMER_PRODUCT = 'customer_products__';
 
-function ProductCard({ product }) {
+function ProductCard({ product, addToCart: handleAddBtn }) {
   const { id, name, price, urlImage } = product;
 
-  const [itemAmount, setItemAmount] = useState(0);
-  const [car, setCar] = useState(JSON.parse(localStorage.getItem('cartItems')));
+  const [quantity, setQuantity] = useState(0);
 
   const handleInput = ({ target: { value } }) => {
-    if (value >= 0) setItemAmount(Math.floor(Number(value)));
+    if (value >= 0) setQuantity(Math.floor(Number(value)));
   };
 
   const handleRmBtn = () => {
-    setItemAmount(itemAmount > 0 ? Number(itemAmount - 1) : 0);
+    console.log('tentando remover');
   };
-
-  const handleAddBtn = () => {
-    setItemAmount(Number(itemAmount + 1));
-    const cartItems = getFromLocalStorage('cartItems');
-    // if (car === []) {
-    //   car.push({ teste: 'teste' });
-    // }
-    // console.log(typeof car);
-    // console.log(car === []);
-    // const teste = ;
-    // console.log(teste);
-    // console.log(car);
-    setCar([...car, { ...product, itemAmount: 0 }]);
-
-    const testFunc = () => cartItems.some((e) => e.name === name);
-
-    if (!testFunc()) {
-      console.log('entrando');
-      const teste = [...cartItems, ...car];
-      console.log(teste);
-      localStorage.setItem('cartItems', JSON.stringify(teste));
-    }
-  };
-  useEffect(() => {
-    // console.log(car);
-  }, [car]);
-  // did mount
-  // useEffect(() => {
-  //   const cartItems = JSON.parse(localStorage.getItem('cartItems'));
-
-  //   cartItems.push({ ...product, itemAmount: 0 });
-
-  //   localStorage.setItem('cartItems', JSON.stringify(cartItems));
-  // }, [product]);
-
-  // did update
-  // useEffect(() => {
-  //   const cartItems = JSON.parse(localStorage.getItem('cartItems'));
-  //   const itemToUpdate = cartItems.find((obj) => obj.name === name);
-
-  //   itemToUpdate.itemAmount = itemAmount;
-
-  //   localStorage.setItem('cartItems', JSON.stringify(cartItems));
-
-  //   window.dispatchEvent(new Event('storage'));
-  // }, [itemAmount, name]);
 
   return (
     <li className="productCard">
@@ -92,13 +44,13 @@ function ProductCard({ product }) {
       </button>
       <input
         data-testid={ `${CUSTOMER_PRODUCT}input-card-quantity-${id}` }
-        value={ itemAmount }
+        value={ quantity }
         onChange={ handleInput }
       />
       <button
         data-testid={ `${CUSTOMER_PRODUCT}button-card-add-item-${id}` }
         type="button"
-        onClick={ handleAddBtn }
+        onClick={ () => handleAddBtn(product) }
       >
         +
       </button>
@@ -113,6 +65,7 @@ ProductCard.propTypes = {
     urlImage: PropTypes.string.isRequired,
     price: PropTypes.string.isRequired,
   }).isRequired,
+  addToCart: PropTypes.func.isRequired,
 };
 
 export default ProductCard;
