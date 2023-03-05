@@ -12,6 +12,13 @@ function ProductCard({ product }) {
     if (value >= 0) setItemAmount(Math.floor(Number(value)));
   };
 
+  const handleRmBtn = () => {
+    setItemAmount(itemAmount > 0 ? Number(itemAmount - 1) : 0);
+  };
+
+  const handleAddBtn = () => {
+    setItemAmount(Number(itemAmount + 1));
+  };
   // did mount
   useEffect(() => {
     const carItems = JSON.parse(localStorage.getItem('carItems'));
@@ -55,7 +62,7 @@ function ProductCard({ product }) {
       <button
         data-testid={ `${CUSTOMER_PRODUCT}button-card-rm-item-${id}` }
         type="button"
-        onClick={ () => setItemAmount(itemAmount > 0 ? Number(itemAmount - 1) : 0) }
+        onClick={ handleRmBtn }
       >
         -
       </button>
@@ -67,7 +74,7 @@ function ProductCard({ product }) {
       <button
         data-testid={ `${CUSTOMER_PRODUCT}button-card-add-item-${id}` }
         type="button"
-        onClick={ () => setItemAmount(Number(itemAmount + 1)) }
+        onClick={ handleAddBtn }
       >
         +
       </button>
