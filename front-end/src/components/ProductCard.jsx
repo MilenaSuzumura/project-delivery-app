@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 const CUSTOMER_PRODUCT = 'customer_products__';
@@ -7,48 +7,31 @@ function ProductCard({ product }) {
   const { id, name, price, urlImage } = product;
 
   const [itemAmount, setItemAmount] = useState(0);
-  const [carItems, setCarItems] = useState([]);
-
-  // did mount
-  // useEffect(() => {
-  //   const newCarItems = carItems.push({ ...product, itemAmount: 0 });
-  //   setCarItems(newCarItems);
-
-  //   localStorage.setItem('carItems', JSON.stringify(carItems));
-  // }, [product, carItems]);
-
-  // did update
-  useEffect(() => {
-    if (!carItems.length) {
-      console.log('Array Vazio Fi');
-    } else {
-      console.log('Dentro do else');
-      const itemToUpdate = carItems.find((obj) => obj.name === name);
-
-      itemToUpdate.itemAmount = itemAmount;
-    }
-
-    // localStorage.setItem('carItems', JSON.stringify(carItems));
-
-    // window.dispatchEvent(new Event('storage'));
-  }, [itemAmount, name, carItems]);
 
   const handleInput = ({ target: { value } }) => {
     if (value >= 0) setItemAmount(Math.floor(Number(value)));
   };
 
-  const handleRmInput = () => {
-    setItemAmount(itemAmount > 0 ? itemAmount - 1 : 0);
-  };
+  // did mount
+  useEffect(() => {
+    const carItems = JSON.parse(localStorage.getItem('carItems'));
 
-  const handleAddInput = () => {
-    setItemAmount(Number(itemAmount + 1));
+    carItems.push({ ...product, itemAmount: 0 });
 
-    const newCarItems = [...carItems];
-    console.log(newCarItems);
+    localStorage.setItem('carItems', JSON.stringify(carItems));
+  }, [product]);
 
-    setCarItems(newCarItems);
-  };
+  // did update
+  useEffect(() => {
+    const carItems = JSON.parse(localStorage.getItem('carItems'));
+    const itemToUpdate = carItems.find((obj) => obj.name === name);
+
+    itemToUpdate.itemAmount = itemAmount;
+
+    localStorage.setItem('carItems', JSON.stringify(carItems));
+
+    window.dispatchEvent(new Event('storage'));
+  }, [itemAmount, name]);
 
   return (
     <li className="productCard">
@@ -72,7 +55,7 @@ function ProductCard({ product }) {
       <button
         data-testid={ `${CUSTOMER_PRODUCT}button-card-rm-item-${id}` }
         type="button"
-        onClick={ handleRmInput }
+        onClick={ () => setItemAmount(itemAmount > 0 ? Number(itemAmount - 1) : 0) }
       >
         -
       </button>
@@ -84,7 +67,7 @@ function ProductCard({ product }) {
       <button
         data-testid={ `${CUSTOMER_PRODUCT}button-card-add-item-${id}` }
         type="button"
-        onClick={ handleAddInput }
+        onClick={ () => setItemAmount(Number(itemAmount + 1)) }
       >
         +
       </button>
