@@ -1,19 +1,56 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 const CUSTOMER_PRODUCT = 'customer_products__';
 
-function ProductCard({ product, addToCart: handleAddBtn }) {
+function ProductCard({ product }) {
   const { id, name, price, urlImage } = product;
 
   const [quantity, setQuantity] = useState(0);
+  const [cartItems, setCartItems] = useState([]);
+
+  useEffect(() => {
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+  }, [cartItems]);
 
   const handleInput = ({ target: { value } }) => {
     if (value >= 0) setQuantity(Math.floor(Number(value)));
   };
 
-  const handleRmBtn = () => {
-    console.log('tentando remover');
+  const handleRmBtn = (actualProduct) => {
+    const item = cartItems.find((e) => e.id === actualProduct.id);
+
+    if (item) {
+      // Se o produto já existe no carrinho mas a quantidade é 0,
+      // ao tentar subtrair remove ele da lista "cartItems"
+      switch (item.quantity) {
+      case 0:
+        setCartItems(cartItems.filter((e) => e.id !== actualProduct.id));
+        break;
+        // Ao clicar no botão, atualiza a quantidade subtraindo 1
+      default:
+        setCartItems(cartItems.map((e) => {
+          if (e.id === actualProduct.id) { return { ...e, quantity: e.quantity - 1 }; }
+          return item;
+        }));
+        break;
+      }
+    }
+  };
+
+  const handleAddBtn = (actualProduct) => {
+    const item = cartItems.find((e) => e.id === actualProduct.id);
+
+    if (item) {
+      // Se o produto já existe no carrinho, atualiza a quantidade
+      setCartItems(cartItems.map((e) => {
+        if (e.id === actualProduct.id) { return { ...e, quantity: e.quantity + 1 }; }
+        return item;
+      }));
+    } else {
+      // Se o produto ainda não está no carrinho, adiciona um novo item
+      setCartItems([...cartItems, { ...actualProduct, quantity: 1 }]);
+    }
   };
 
   return (
@@ -38,7 +75,7 @@ function ProductCard({ product, addToCart: handleAddBtn }) {
       <button
         data-testid={ `${CUSTOMER_PRODUCT}button-card-rm-item-${id}` }
         type="button"
-        onClick={ handleRmBtn }
+        onClick={ () => handleRmBtn(product) }
       >
         -
       </button>
@@ -65,7 +102,6 @@ ProductCard.propTypes = {
     urlImage: PropTypes.string.isRequired,
     price: PropTypes.string.isRequired,
   }).isRequired,
-  addToCart: PropTypes.func.isRequired,
 };
 
 export default ProductCard;
