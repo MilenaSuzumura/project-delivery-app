@@ -6,32 +6,27 @@ const CUSTOMER_PRODUCT = 'customer_products__';
 function ProductCard({ product }) {
   const { id, name, price, urlImage } = product;
 
-  const [itemAmount, setItemAmount] = useState(0);
+  const [quantity, setQuantity] = useState(0);
 
   const handleInput = ({ target: { value } }) => {
-    if (value >= 0) setItemAmount(Math.floor(Number(value)));
+    if (value >= 0) setQuantity(Math.floor(Number(value)));
   };
 
-  // did mount
-  useEffect(() => {
-    const cartItems = JSON.parse(localStorage.getItem('cartItems'));
-
-    cartItems.push({ ...product, itemAmount: 0 });
-
-    localStorage.setItem('cartItems', JSON.stringify(cartItems));
-  }, [product]);
-
-  // did update
   useEffect(() => {
     const cartItems = JSON.parse(localStorage.getItem('cartItems'));
     const itemToUpdate = cartItems.find((obj) => obj.name === name);
-
-    itemToUpdate.itemAmount = itemAmount;
-
-    localStorage.setItem('cartItems', JSON.stringify(cartItems));
-
-    window.dispatchEvent(new Event('storage'));
-  }, [itemAmount, name]);
+    if (quantity > 0) {
+      if (itemToUpdate) itemToUpdate.quantity = quantity;
+      else cartItems.push({ ...product, quantity });
+      localStorage.setItem('cartItems', JSON.stringify(cartItems));
+      window.dispatchEvent(new Event('storage'));
+    } else if (itemToUpdate) {
+      const itemId = cartItems.findIndex((item) => item.name === product.name);
+      cartItems.splice(itemId, 1);
+      localStorage.setItem('cartItems', JSON.stringify(cartItems));
+      window.dispatchEvent(new Event('storage'));
+    }
+  }, [quantity, name, product]);
 
   return (
     <li className="productCard">
@@ -55,19 +50,19 @@ function ProductCard({ product }) {
       <button
         data-testid={ `${CUSTOMER_PRODUCT}button-card-rm-item-${id}` }
         type="button"
-        onClick={ () => setItemAmount(itemAmount > 0 ? Number(itemAmount - 1) : 0) }
+        onClick={ () => setQuantity(quantity > 0 ? Number(quantity - 1) : 0) }
       >
         -
       </button>
       <input
         data-testid={ `${CUSTOMER_PRODUCT}input-card-quantity-${id}` }
-        value={ itemAmount }
+        value={ quantity }
         onChange={ handleInput }
       />
       <button
         data-testid={ `${CUSTOMER_PRODUCT}button-card-add-item-${id}` }
         type="button"
-        onClick={ () => setItemAmount(Number(itemAmount + 1)) }
+        onClick={ () => setQuantity(Number(quantity + 1)) }
       >
         +
       </button>

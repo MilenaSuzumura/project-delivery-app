@@ -25,7 +25,7 @@ function Products() {
 
       let total = 0;
       cartItems.forEach((item) => {
-        total += (item.itemAmount * item.price);
+        total += (item.quantity * item.price);
       });
       setTotalPrice(total.toFixed(2).toString().replace('.', ','));
     };
