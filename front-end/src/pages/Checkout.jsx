@@ -4,6 +4,8 @@ import OrderCard from '../components/OrderCard';
 
 import getFromLocalStorage from '../utils/localStorage';
 
+const CUSTOMER_TEST_ID = 'customer_checkout__';
+
 export default function Checkout() {
   const name = getFromLocalStorage('user', 'name');
   const role = getFromLocalStorage('user', 'role');
@@ -19,7 +21,7 @@ export default function Checkout() {
       setCartItems(items);
 
       let total = 0;
-      cartItems.forEach((item) => {
+      items.forEach((item) => {
         total += (item.quantity * item.price);
       });
       setTotalPrice(total.toFixed(2).toString().replace('.', ','));
@@ -64,6 +66,42 @@ export default function Checkout() {
       >
         { `Total: R$ ${totalPrice}`}
       </h2>
+
+      <h3>
+        Detalhes e Endereço para Entrega
+      </h3>
+      <form>
+        <div>
+          <label
+            data-testid={ `${CUSTOMER_TEST_ID}select-seller` }
+            htmlFor="saller"
+          >
+            P. Vendedora Responsável:
+            <input type="text" id="seller" required />
+          </label>
+          <label
+            data-testid={ `${CUSTOMER_TEST_ID}input-address` }
+            htmlFor="address"
+          >
+            Endereço:
+            <input type="text" id="address" required />
+          </label>
+          <label
+            data-testid={ `${CUSTOMER_TEST_ID}input-address-number` }
+            htmlFor="number"
+          >
+            Número:
+            <input type="text" id="number" required />
+          </label>
+          <button
+            data-testid={ `${CUSTOMER_TEST_ID}button-submit-order` }
+            type="button"
+            onClick={ () => console.log('a') }
+          >
+            FINALIZAR PEDIDO
+          </button>
+        </div>
+      </form>
     </div>
   );
 }
