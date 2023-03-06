@@ -14,21 +14,21 @@ function ProductCard({ product }) {
 
   // did mount
   useEffect(() => {
-    const carItems = JSON.parse(localStorage.getItem('carItems'));
+    const cartItems = JSON.parse(localStorage.getItem('cartItems'));
 
-    carItems.push({ ...product, itemAmount: 0 });
+    cartItems.push({ ...product, itemAmount: 0 });
 
-    localStorage.setItem('carItems', JSON.stringify(carItems));
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
   }, [product]);
 
   // did update
   useEffect(() => {
-    const carItems = JSON.parse(localStorage.getItem('carItems'));
-    const itemToUpdate = carItems.find((obj) => obj.name === name);
+    const cartItems = JSON.parse(localStorage.getItem('cartItems'));
+    const itemToUpdate = cartItems.find((obj) => obj.name === name);
 
     itemToUpdate.itemAmount = itemAmount;
 
-    localStorage.setItem('carItems', JSON.stringify(carItems));
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
 
     window.dispatchEvent(new Event('storage'));
   }, [itemAmount, name]);
