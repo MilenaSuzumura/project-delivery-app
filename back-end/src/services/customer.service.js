@@ -48,6 +48,12 @@ const createSale = async (sale) => {
   return { message: newSale };
 };
 
+const getOrdersByUser = async (userId) => {
+  const sales = await Sale.findAll({ where: { userId } });
+
+  return { message: sales };
+};
+
 module.exports = {
   getAllProducts,
   getProductById,
@@ -57,4 +63,5 @@ module.exports = {
   getAllSales,
   getSaleById,
   createSale,
+  getOrdersByUser,
 };
