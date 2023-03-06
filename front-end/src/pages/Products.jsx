@@ -31,6 +31,8 @@ function Products() {
     };
 
     window.addEventListener('storage', handleStorageChange);
+
+    handleStorageChange();
   }, []);
 
   useEffect(() => {
