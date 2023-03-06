@@ -53,6 +53,13 @@ const createSale = async (req, res) => {
   return res.status(201).json(message);
 };
 
+const getOrdersByUser = async (req, res) => {
+  const { userId } = req.body;
+  const { message } = await customerService.getSalesByUser(userId);
+
+  return res.status(200).json(message);
+};
+
 module.exports = {
   getAllProducts,
   getProductById,
@@ -62,4 +69,5 @@ module.exports = {
   getAllSales,
   getSaleById,
   createSale,
+  getOrdersByUser,
 };
