@@ -6,52 +6,32 @@ const CUSTOMER_PRODUCT = 'customer_products__';
 function ProductCard({ product }) {
   const { id, name, price, urlImage } = product;
 
-  const [quantity, setQuantity] = useState(0);
-  const [cartItems, setCartItems] = useState([]);
-
-  useEffect(() => {
-    localStorage.setItem('cartItems', JSON.stringify(cartItems));
-  }, [cartItems]);
+  const [itemAmount, setItemAmount] = useState(0);
 
   const handleInput = ({ target: { value } }) => {
-    if (value >= 0) setQuantity(Math.floor(Number(value)));
+    if (value >= 0) setItemAmount(Math.floor(Number(value)));
   };
 
-  const handleRmBtn = (actualProduct) => {
-    const item = cartItems.find((e) => e.id === actualProduct.id);
+  // did mount
+  useEffect(() => {
+    const carItems = JSON.parse(localStorage.getItem('carItems'));
 
-    if (item) {
-      // Se o produto já existe no carrinho mas a quantidade é 0,
-      // ao tentar subtrair remove ele da lista "cartItems"
-      switch (item.quantity) {
-      case 0:
-        setCartItems(cartItems.filter((e) => e.id !== actualProduct.id));
-        break;
-        // Ao clicar no botão, atualiza a quantidade subtraindo 1
-      default:
-        setCartItems(cartItems.map((e) => {
-          if (e.id === actualProduct.id) { return { ...e, quantity: e.quantity - 1 }; }
-          return item;
-        }));
-        break;
-      }
-    }
-  };
+    carItems.push({ ...product, itemAmount: 0 });
 
-  const handleAddBtn = (actualProduct) => {
-    const item = cartItems.find((e) => e.id === actualProduct.id);
+    localStorage.setItem('carItems', JSON.stringify(carItems));
+  }, [product]);
 
-    if (item) {
-      // Se o produto já existe no carrinho, atualiza a quantidade
-      setCartItems(cartItems.map((e) => {
-        if (e.id === actualProduct.id) { return { ...e, quantity: e.quantity + 1 }; }
-        return item;
-      }));
-    } else {
-      // Se o produto ainda não está no carrinho, adiciona um novo item
-      setCartItems([...cartItems, { ...actualProduct, quantity: 1 }]);
-    }
-  };
+  // did update
+  useEffect(() => {
+    const carItems = JSON.parse(localStorage.getItem('carItems'));
+    const itemToUpdate = carItems.find((obj) => obj.name === name);
+
+    itemToUpdate.itemAmount = itemAmount;
+
+    localStorage.setItem('carItems', JSON.stringify(carItems));
+
+    window.dispatchEvent(new Event('storage'));
+  }, [itemAmount, name]);
 
   return (
     <li className="productCard">
@@ -75,19 +55,19 @@ function ProductCard({ product }) {
       <button
         data-testid={ `${CUSTOMER_PRODUCT}button-card-rm-item-${id}` }
         type="button"
-        onClick={ () => handleRmBtn(product) }
+        onClick={ () => setItemAmount(itemAmount > 0 ? Number(itemAmount - 1) : 0) }
       >
         -
       </button>
       <input
         data-testid={ `${CUSTOMER_PRODUCT}input-card-quantity-${id}` }
-        value={ quantity }
+        value={ itemAmount }
         onChange={ handleInput }
       />
       <button
         data-testid={ `${CUSTOMER_PRODUCT}button-card-add-item-${id}` }
         type="button"
-        onClick={ () => handleAddBtn(product) }
+        onClick={ () => setItemAmount(Number(itemAmount + 1)) }
       >
         +
       </button>

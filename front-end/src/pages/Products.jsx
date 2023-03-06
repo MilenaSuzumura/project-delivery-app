@@ -1,6 +1,5 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
 
 import NavBar from '../components/NavBar';
 import ProductCard from '../components/ProductCard';
@@ -9,34 +8,30 @@ import getFromLocalStorage from '../utils/localStorage';
 const ROLE_PRODUCTS = 'customer_products__';
 
 function Products() {
+  const [products, setProducts] = useState([]);
+
   const name = getFromLocalStorage('user', 'name');
   const role = getFromLocalStorage('user', 'role');
-  const history = useHistory();
 
-  const [products, setProducts] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
 
   const userInfos = { name, role };
 
   useEffect(() => {
-    console.log('entrando');
     const handleStorageChange = () => {
-      const getCartItems = () => JSON.parse(localStorage.getItem('cartItems'));
-      const cartItemsLocalStorage = getCartItems();
+      const carItems = JSON.parse(localStorage.getItem('carItems'));
 
       let total = 0;
-      cartItemsLocalStorage.forEach((item) => {
-        total += (item.quantity * item.price);
+      carItems.forEach((item) => {
+        total += (item.itemAmount * item.price);
       });
-      setTotalPrice(total.toFixed(2).toString().replace('.', ','));
+      setTotalPrice(total);
     };
 
     window.addEventListener('storage', handleStorageChange);
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('cartItems', JSON.stringify([]));
-
     const getProducts = async () => {
       const headers = {
         'Content-Type': 'application/json',
@@ -54,6 +49,8 @@ function Products() {
       }
     };
     getProducts();
+
+    localStorage.setItem('carItems', JSON.stringify([]));
   }, []);
 
   if (products) {
@@ -66,7 +63,6 @@ function Products() {
               <ProductCard
                 key={ product.id }
                 product={ product }
-                // addToCart={ addToCart }
               />
             ))
           }
@@ -74,12 +70,12 @@ function Products() {
         <button
           type="button"
           data-testid={ `${ROLE_PRODUCTS}button-cart` }
-          onClick={ () => history.push('/customer/checkout') }
-          disabled={ totalPrice === '0,00' }
         >
-          {'Ver carrinho R$: '}
+          <p>
+            { 'Ver Carrinho: R$ ' }
+          </p>
           <p data-testid={ `${ROLE_PRODUCTS}checkout-bottom-value` }>
-            { totalPrice }
+            { totalPrice.toFixed(2).toString().replace('.', ',') }
           </p>
         </button>
       </div>

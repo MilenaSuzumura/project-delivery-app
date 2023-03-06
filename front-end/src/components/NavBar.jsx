@@ -8,8 +8,8 @@ function NavBar({ userInfos }) {
   const history = useHistory();
 
   const logOut = () => {
-    localStorage.clear();
     history.push('/');
+    localStorage.clear();
   };
 
   const changeURL = (route) => {

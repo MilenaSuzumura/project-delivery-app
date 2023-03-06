@@ -30,7 +30,7 @@ module.exports = {
         onDelete: 'CASCADE',
       },
       total_price: {
-        type: Sequelize.DECIMAL(9, 2),
+        type: Sequelize.DECIMAL,
         allowNull: false,
       },
       delivery_address: {
@@ -44,6 +44,7 @@ module.exports = {
       sale_date: {
         type: Sequelize.DATE,
         allowNull: false,
+        defaultValue: Sequelize.NOW,
       },
       status: {
         type: Sequelize.STRING,
