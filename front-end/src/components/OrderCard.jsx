@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function OrderCard({ carItem }) {
-  console.log(carItem);
+function OrderCard({ cartItem }) {
+  console.log(cartItem);
 
   return (
     <div>
@@ -12,7 +12,7 @@ function OrderCard({ carItem }) {
 }
 
 OrderCard.propTypes = {
-  carItem: PropTypes.shape({
+  cartItem: PropTypes.shape({
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
     urlImage: PropTypes.string.isRequired,
