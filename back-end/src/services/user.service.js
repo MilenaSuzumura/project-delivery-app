@@ -6,7 +6,7 @@ const { User } = require('../database/models');
 const login = async (email, password) => {
   const user = await User.findOne({
     where: { email, password: md5(password) },
-    attributes: { exclude: ['password', 'id'] },
+    attributes: { exclude: ['password'] },
   });
 
   if (!user) {
@@ -23,7 +23,7 @@ const login = async (email, password) => {
 const register = async (name, email, password) => {
   const user = await User.findOne({
     where: { email, password: md5(password) },
-    attributes: { exclude: ['password', 'id'] },
+    attributes: { exclude: ['password'] },
   });
 
   if (user) {
@@ -32,7 +32,7 @@ const register = async (name, email, password) => {
 
   const newUser = await User.create({ name, email, password: md5(password), role: 'customer' });
 
-  const { password: _, id, ...data } = newUser.dataValues;
+  const { password: _, ...data } = newUser.dataValues;
   const token = create(data);
 
   return { type: null, message: { ...data, token } };
