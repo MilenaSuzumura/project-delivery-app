@@ -6,9 +6,11 @@ import getFromLocalStorage from '../utils/localStorage';
 function HomePage() {
   const name = getFromLocalStorage('user', 'name');
   const role = getFromLocalStorage('user', 'role');
+
   return (
     <div>
       <NavBar userInfos={ { name, role } } />
+      <h1>HOME PAGE</h1>
     </div>
   );
 }
