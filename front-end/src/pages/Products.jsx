@@ -20,16 +20,19 @@ function Products() {
 
   useEffect(() => {
     const handleStorageChange = () => {
-      const carItems = JSON.parse(localStorage.getItem('carItems'));
+      const getCartItems = () => JSON.parse(localStorage.getItem('cartItems'));
+      const cartItems = getCartItems();
 
       let total = 0;
-      carItems.forEach((item) => {
-        total += (item.itemAmount * item.price);
+      cartItems?.forEach((item) => {
+        total += (item.quantity * item.price);
       });
       setTotalPrice(total.toFixed(2).toString().replace('.', ','));
     };
 
     window.addEventListener('storage', handleStorageChange);
+
+    handleStorageChange();
   }, []);
 
   useEffect(() => {
@@ -51,7 +54,7 @@ function Products() {
     };
     getProducts();
 
-    localStorage.setItem('carItems', JSON.stringify([]));
+    localStorage.setItem('cartItems', JSON.stringify([]));
   }, []);
 
   if (products) {
