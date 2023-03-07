@@ -15,14 +15,18 @@ function ProductCard({ product }) {
   useEffect(() => {
     const cartItems = JSON.parse(localStorage.getItem('cartItems'));
     const itemToUpdate = cartItems.find((obj) => obj.name === name);
+
     if (quantity > 0) {
       if (itemToUpdate) itemToUpdate.quantity = quantity;
       else cartItems.push({ ...product, quantity });
+
       localStorage.setItem('cartItems', JSON.stringify(cartItems));
       window.dispatchEvent(new Event('storage'));
     } else if (itemToUpdate) {
       const itemId = cartItems.findIndex((item) => item.name === product.name);
+
       cartItems.splice(itemId, 1);
+
       localStorage.setItem('cartItems', JSON.stringify(cartItems));
       window.dispatchEvent(new Event('storage'));
     }

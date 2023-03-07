@@ -10,10 +10,10 @@ function OrderCard({ cartItem, id }) {
   const removeItem = () => {
     const items = JSON.parse(localStorage.getItem('cartItems'));
 
-    items.splice(id - 1, 1);
+    items.splice(id, 1);
     localStorage.setItem('cartItems', JSON.stringify(items));
 
-    window.dispatchEvent(new Event('storage'));
+    window.dispatchEvent(new Event('storage_checkout'));
   };
 
   return (
@@ -21,7 +21,7 @@ function OrderCard({ cartItem, id }) {
       <td
         data-testid={ `${CUSTOMER_TEST_ID}item-number-${id}` }
       >
-        { id }
+        { id + 1 }
       </td>
       <td
         data-testid={ `${CUSTOMER_TEST_ID}name-${id}` }

@@ -27,7 +27,7 @@ export default function Checkout() {
       setTotalPrice(total.toFixed(2).toString().replace('.', ','));
     };
 
-    window.addEventListener('storage', handleStorageChange);
+    window.addEventListener('storage_checkout', handleStorageChange);
 
     handleStorageChange();
   }, []);
@@ -55,7 +55,7 @@ export default function Checkout() {
               <OrderCard
                 key={ i }
                 cartItem={ item }
-                id={ i + 1 }
+                id={ i }
               />
             ))
           }
