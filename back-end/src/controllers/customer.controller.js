@@ -55,7 +55,7 @@ const createSale = async (req, res) => {
 
 const getOrdersByUser = async (req, res) => {
   const { userId } = req.body;
-  const { message } = await customerService.getSalesByUser(userId);
+  const { message } = await customerService.getOrdersByUser(userId);
 
   return res.status(200).json(message);
 };
