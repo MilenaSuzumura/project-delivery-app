@@ -88,10 +88,9 @@ module.exports = {
   deleteProduct,
   getAllSales,
   getSaleById,
-  createSale,
-  getOrdersByUser,
-  getOrderById,
   checkout,
   updateSale,
   deleteSale,
+  getOrdersByUser,
+  getOrderById,
 };

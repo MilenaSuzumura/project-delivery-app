@@ -1,4 +1,4 @@
-const { Product, Sale, SaleProduct, sequelize } = require('../database/models');
+const { Product, Sale, SaleProduct, sequelize, User } = require('../database/models');
 
 const getAllProducts = async () => {
   const products = await Product.findAll();
@@ -115,13 +115,9 @@ module.exports = {
   deleteProduct,
   getAllSales,
   getSaleById,
-<<<<<<< HEAD
-  createSale,
-  getOrdersByUser,
-  getOrderById,
-=======
   checkout,
   updateSale,
   deleteSale,
->>>>>>> main-group-7-dev
+  getOrdersByUser,
+  getOrderById,
 };
