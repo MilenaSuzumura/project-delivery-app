@@ -54,6 +54,12 @@ const getOrdersByUser = async (userId) => {
   return { message: sales };
 };
 
+const getOrderById = async (id) => {
+  const orderById = await Sale.findByPk(id, { include: [{ model: Product, as: 'products' }] });
+
+  return { message: orderById };
+};
+
 module.exports = {
   getAllProducts,
   getProductById,
@@ -64,4 +70,5 @@ module.exports = {
   getSaleById,
   createSale,
   getOrdersByUser,
+  getOrderById,
 };
