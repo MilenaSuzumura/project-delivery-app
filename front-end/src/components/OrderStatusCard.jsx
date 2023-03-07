@@ -16,22 +16,19 @@ function OrderStatusCard({ orderInfo }) {
     case ONE_DIGIT:
       return (
         <p data-testid={ `${ORDER_ELEMENT}order-id-${id}` }>
-          000
-          {id}
+          { `000${id}`}
         </p>
       );
     case TWO_DIGITS:
       return (
         <p data-testid={ `${ORDER_ELEMENT}order-id-${id}` }>
-          00
-          {id}
+          { `00${id}`}
         </p>
       );
     case THREE_DIGITS:
       return (
         <p data-testid={ `${ORDER_ELEMENT}order-id-${id}` }>
-          0
-          {id}
+          { `0${id}`}
         </p>
       );
     default:

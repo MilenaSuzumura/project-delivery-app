@@ -24,11 +24,11 @@ function NavBar({ userInfos }) {
     changeURL('/');
   };
 
-  const handleHPBtn = () => {
-    const { pathname } = history.location;
-    if (pathname !== '/customer/homepage') changeURL('/customer/homepage');
-    window.location.reload();
-  };
+  // const handleHPBtn = () => {
+  //   const { pathname } = history.location;
+  //   if (pathname !== '/customer/homepage') changeURL('/customer/homepage');
+  //   window.location.reload();
+  // };
 
   return (
     <ul className="navBar">
@@ -53,13 +53,16 @@ function NavBar({ userInfos }) {
         </button>
       </li>
       <li>
-        <button
+        {/* <button
           type="button"
           data-testid={ `${ROLE_PRODUCTS}user-full-name` }
           onClick={ notLogged ? history.push('/') : () => handleHPBtn() }
         >
           { userInfos.name }
-        </button>
+        </button> */}
+        <p data-testid={ `${ROLE_PRODUCTS}user-full-name` }>
+          { userInfos.name }
+        </p>
       </li>
       <li>
         <button
