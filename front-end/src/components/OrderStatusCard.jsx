@@ -3,11 +3,11 @@ import { ONE_DIGIT, TWO_DIGITS, THREE_DIGITS,
   zero, two, four, six, eight } from '../utils/numbers';
 
 function OrderStatusCard({ orderInfo }) {
-  const { id, status, price, date } = orderInfo;
+  const { id, status, totalPrice, saleDate } = orderInfo;
 
-  const DAY = date.substring(zero, two);
-  const MONTH = date.substring(two, four);
-  const YEAR = date.substring(six, eight);
+  const DAY = saleDate.substring(zero, two);
+  const MONTH = saleDate.substring(two, four);
+  const YEAR = saleDate.substring(six, eight);
 
   const ORDER_ELEMENT = 'customer_orders__element-';
 
@@ -45,7 +45,7 @@ function OrderStatusCard({ orderInfo }) {
       >
         { `${DAY}/${MONTH}/${YEAR}` }
       </p>
-      <p data-testid={ `${ORDER_ELEMENT}card-price-${id}` }>{ price }</p>
+      <p data-testid={ `${ORDER_ELEMENT}card-price-${id}` }>{ totalPrice }</p>
     </div>
   );
 }
@@ -54,8 +54,8 @@ OrderStatusCard.propTypes = {
   orderInfo: PropTypes.shape({
     id: PropTypes.number.isRequired,
     status: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-    date: PropTypes.string.isRequired,
+    totalPrice: PropTypes.number.isRequired,
+    saleDate: PropTypes.string.isRequired,
   }).isRequired,
 };
 
