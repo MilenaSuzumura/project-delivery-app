@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const md5 = require('md5');
 
 const { create } = require('../utils/token');
@@ -21,10 +22,7 @@ const login = async (email, password) => {
 };
 
 const register = async (name, email, password) => {
-  const user = await User.findOne({
-    where: { email, password: md5(password) },
-    attributes: { exclude: ['password'] },
-  });
+  const user = await User.findOne({ where: { [Op.or]: [{ email }, { name }] } });
 
   if (user) {
     return { type: 'CONFLICT', message: 'Conflict' };
