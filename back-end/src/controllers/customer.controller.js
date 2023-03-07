@@ -47,10 +47,37 @@ const getSaleById = async (req, res) => {
   return res.status(200).json(message);
 };
 
-const createSale = async (req, res) => {
-  const { message } = await customerService.createSale(req.body);
+const checkout = async (req, res) => {
+  const { message } = await customerService.checkout(req.body);
 
-  return res.status(201).json(message);
+  return res.status(200).json(message);
+};
+
+const updateSale = async (req, res) => {
+  const { message } = await customerService.updateSale(req.params.id, req.body);
+
+  return res.status(200).json(message);
+};
+
+const deleteSale = async (req, res) => {
+  const { id } = req.params;
+  const { message } = await customerService.deleteSale(id);
+
+  return res.status(202).json({ message });
+};
+
+const getOrdersByUser = async (req, res) => {
+  const { userId } = req.body;
+  const { message } = await customerService.getOrdersByUser(userId);
+
+  return res.status(200).json(message);
+};
+
+const getOrderById = async (req, res) => {
+  const { id } = req.params;
+  const { message } = await customerService.getOrderById(id);
+
+  return res.status(200).json(message);
 };
 
 module.exports = {
@@ -62,4 +89,9 @@ module.exports = {
   getAllSales,
   getSaleById,
   createSale,
+  getOrdersByUser,
+  getOrderById,
+  checkout,
+  updateSale,
+  deleteSale,
 };
