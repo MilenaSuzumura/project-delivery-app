@@ -139,7 +139,7 @@ function CustomerOrderDetails({ match }) {
 
   return (
     <div>
-      {/* <NavBar userInfos={ { name, role } } /> */}
+      <NavBar userInfos={ { name, role } } />
       <div>
         DETALHE DO PEDIDO
         { detailsGenerator() }
