@@ -14,6 +14,24 @@ export default function Login() {
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user) {
+      const { role } = user;
+      switch (role) {
+      case 'administrator':
+        history.push('/ADMIN');
+        break;
+      case 'seller':
+        history.push('/SELLER');
+        break;
+      default:
+        history.push('/customer/products');
+        break;
+      }
+    }
+  }, [history]);
+
+  useEffect(() => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const passwordRegex = /^.{6}/;
 

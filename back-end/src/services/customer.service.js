@@ -93,6 +93,20 @@ const deleteSale = async (id) => {
   return { message: 'Sale deleted' };
 };
 
+const getOrdersByUser = async (userId) => {
+  const sales = await Sale.findAll({ where: { userId } });
+
+  return { message: sales };
+};
+
+const getOrderById = async (id) => {
+  const orderById = await Sale.findByPk(
+    id, { include: [{ model: Product, as: 'products' }, { model: User, as: 'seller' }] },
+  );
+
+  return { message: orderById };
+};
+
 module.exports = {
   getAllProducts,
   getProductById,
@@ -101,7 +115,13 @@ module.exports = {
   deleteProduct,
   getAllSales,
   getSaleById,
+<<<<<<< HEAD
+  createSale,
+  getOrdersByUser,
+  getOrderById,
+=======
   checkout,
   updateSale,
   deleteSale,
+>>>>>>> main-group-7-dev
 };

@@ -39,13 +39,14 @@ export default function Register() {
     const headers = { 'Content-Type': 'application/json' };
 
     try {
-      await axios({
+      const { data } = await axios({
         method: 'post',
         url: 'http://localhost:3001/register',
         data: body,
         headers,
       });
 
+      localStorage.setItem('user', JSON.stringify(data));
       history.push('/customer/products');
     } catch (e) {
       setErrorMessage(e.message);
