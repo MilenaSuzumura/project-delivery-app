@@ -1,3 +1,4 @@
+import axios from 'axios';
 import PropTypes from 'prop-types';
 import NavBar from '../components/NavBar';
 import getFromLocalStorage from '../utils/localStorage';
@@ -10,6 +11,29 @@ function CustomerOrderDetails({ match }) {
 
   const name = getFromLocalStorage('user', 'name');
   const role = getFromLocalStorage('user', 'role');
+  const token = getFromLocalStorage('user', 'token');
+
+  const [orders, setOrders] = useState([]);
+
+  useEffect(() => {
+    const getFetch = async () => {
+      const headers = { 'Content-Type': 'application/json', authorization: token };
+
+      try {
+        const data = await axios({
+          method: 'get',
+          url: `http://localhost:3001/customer/orders/${id}`,
+          data: {},
+          headers,
+        });
+        setOrders(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getFetch();
+  }, [id, token]);
 
   const handleBtn = () => {
     console.log('SENDO CLICADO');
@@ -73,4 +97,3 @@ CustomerOrderDetails.propTypes = {
 };
 
 export default CustomerOrderDetails;
-// { `${DETAILS}${ELEMENT}` }
