@@ -69,7 +69,7 @@ export default function Login() {
         />
         Senha
         <input
-          type="password"
+          type="text"
           value={ passwordValue }
           min="6"
           onChange={ (e) => setPasswordValue(e.target.value) }
