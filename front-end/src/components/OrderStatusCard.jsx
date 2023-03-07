@@ -38,14 +38,16 @@ function OrderStatusCard({ orderInfo }) {
 
   return (
     <div>
-      { cardGenerator() }
-      <p data-testid={ `${ORDER_ELEMENT}delivery-status-${id}` }>{ status }</p>
-      <p
-        data-testid={ `${ORDER_ELEMENT}order-date-${id}` }
-      >
-        { `${DAY}/${MONTH}/${YEAR}` }
-      </p>
-      <p data-testid={ `${ORDER_ELEMENT}card-price-${id}` }>{ totalPrice }</p>
+      <a href={ `/customer/orders/${id}` }>
+        { cardGenerator() }
+        <p data-testid={ `${ORDER_ELEMENT}delivery-status-${id}` }>{ status }</p>
+        <p
+          data-testid={ `${ORDER_ELEMENT}order-date-${id}` }
+        >
+          { `${DAY}/${MONTH}/${YEAR}` }
+        </p>
+        <p data-testid={ `${ORDER_ELEMENT}card-price-${id}` }>{ totalPrice }</p>
+      </a>
     </div>
   );
 }
