@@ -2,6 +2,7 @@ const express = require('express');
 
 const userRouter = require('../routers/user.router');
 const customerRouter = require('../routers/customer.router');
+const sellerRouter = require('../routers/seller.router');
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use(express.static('public'));
 
 app.use(userRouter);
 app.use('/customer', customerRouter);
+app.use('/seller', sellerRouter);
 
 app.get('/coffee', (_req, res) => res.status(418).end());
 
