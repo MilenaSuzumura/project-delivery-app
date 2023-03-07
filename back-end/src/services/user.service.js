@@ -36,4 +36,13 @@ const register = async (name, email, password) => {
   return { type: null, message: { ...data, token } };
 };
 
-module.exports = { login, register };
+const getSellers = async () => {
+  const sellers = await User.findAll({
+    where: { role: 'seller' },
+    attributes: { exclude: ['email', 'password', 'role'] },
+  });
+
+  return { message: sellers };
+};
+
+module.exports = { login, register, getSellers };
