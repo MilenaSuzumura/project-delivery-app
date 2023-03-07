@@ -11,19 +11,19 @@ const fetchSimulator = () => new Promise((resolve) => {
         id: 1,
         status: 'Pendente',
         saleDate: '08042021',
-        total_price: 23.80,
+        totalPrice: 23.80,
       },
       {
         id: 20,
         status: 'Preparando',
         saleDate: '08042021',
-        total_price: 14.20,
+        totalPrice: 14.20,
       },
       {
         id: 349,
         status: 'Entregue',
         saleDate: '07042021',
-        total_price: 28.46,
+        totalPrice: 28.46,
       },
     ];
     resolve(data);
