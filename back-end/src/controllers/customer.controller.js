@@ -60,6 +60,13 @@ const getOrdersByUser = async (req, res) => {
   return res.status(200).json(message);
 };
 
+const getOrderById = async (req, res) => {
+  const { id } = req.params;
+  const { message } = await customerService.getOrderById(id);
+
+  return res.status(200).json(message);
+};
+
 module.exports = {
   getAllProducts,
   getProductById,
@@ -70,4 +77,5 @@ module.exports = {
   getSaleById,
   createSale,
   getOrdersByUser,
+  getOrderById,
 };
