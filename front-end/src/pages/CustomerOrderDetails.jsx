@@ -35,6 +35,8 @@ function CustomerOrderDetails({ match }) {
     getFetch();
   }, [id, token]);
 
+  console.log(orders);
+
   const handleBtn = () => {
     console.log('SENDO CLICADO');
   };
