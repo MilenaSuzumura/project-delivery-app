@@ -1,20 +1,34 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
+import getFromLocalStorage from '../utils/localStorage';
 
 const ROLE_PRODUCTS = 'customer_products__element-navbar-';
 
 function NavBar({ userInfos }) {
+  const [notLogged, setNotLogged] = useState();
   const history = useHistory();
 
-  const logOut = () => {
-    history.push('/');
-    localStorage.clear();
-  };
+  useEffect(() => {
+    const isTokenEmpty = getFromLocalStorage('user', 'token');
+    if (isTokenEmpty === '') setNotLogged(true);
+    else setNotLogged(false);
+  }, []);
 
   const changeURL = (route) => {
     history.push(route);
   };
+
+  const logOut = () => {
+    localStorage.clear();
+    changeURL('/');
+  };
+
+  // const handleHPBtn = () => {
+  //   const { pathname } = history.location;
+  //   if (pathname !== '/customer/homepage') changeURL('/customer/homepage');
+  //   window.location.reload();
+  // };
 
   return (
     <ul className="navBar">
@@ -22,7 +36,9 @@ function NavBar({ userInfos }) {
         <button
           type="button"
           data-testid={ `${ROLE_PRODUCTS}link-products` }
-          onClick={ () => changeURL('/customer/products') }
+          onClick={
+            notLogged ? history.push('/') : () => changeURL('/customer/products')
+          }
         >
           PRODUTOS
         </button>
@@ -31,24 +47,28 @@ function NavBar({ userInfos }) {
         <button
           type="button"
           data-testid={ `${ROLE_PRODUCTS}link-orders` }
-          onClick={ () => changeURL('/customer/orders') }
+          onClick={ notLogged ? history.push('/') : () => changeURL('/customer/orders') }
         >
           MEUS PEDIDOS
         </button>
       </li>
       <li>
-        <button
+        {/* <button
           type="button"
           data-testid={ `${ROLE_PRODUCTS}user-full-name` }
+          onClick={ notLogged ? history.push('/') : () => handleHPBtn() }
         >
           { userInfos.name }
-        </button>
+        </button> */}
+        <p data-testid={ `${ROLE_PRODUCTS}user-full-name` }>
+          { userInfos.name }
+        </p>
       </li>
       <li>
         <button
           type="button"
           data-testid={ `${ROLE_PRODUCTS}link-logout` }
-          onClick={ () => logOut() }
+          onClick={ notLogged ? history.push('/') : () => logOut() }
         >
           Sair
         </button>
