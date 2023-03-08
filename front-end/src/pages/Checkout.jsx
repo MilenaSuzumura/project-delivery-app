@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import axios from 'axios';
+
 import NavBar from '../components/NavBar';
 import OrderCard from '../components/OrderCard';
 
@@ -16,11 +19,24 @@ const DTI_ARR = [
 ];
 
 export default function Checkout() {
+  const history = useHistory();
   const name = getFromLocalStorage('user', 'name');
   const role = getFromLocalStorage('user', 'role');
+  // const userId = getFromLocalStorage('user', 'id');
+  const token = getFromLocalStorage('user', 'token');
+  const userId = 3;
 
   const [cartItems, setCartItems] = useState([]);
+
   const [totalPrice, setTotalPrice] = useState(0);
+
+  const [deliveryAddress, setDeliveryAddress] = useState('');
+  const [deliveryNumber, setDeliveryNumber] = useState('');
+  const [sellerId, setSellerId] = useState(0);
+
+  console.log(sellerId);
+
+  const [sellers, setSellers] = useState([]);
 
   const userInfos = { name, role };
 
@@ -40,6 +56,83 @@ export default function Checkout() {
 
     handleStorageChange();
   }, []);
+
+  const changeInputValue = (e) => {
+    switch (e.target.id) {
+    case 'address':
+      setDeliveryAddress(e.target.value);
+      break;
+    case 'number':
+      setDeliveryNumber(e.target.value);
+      break;
+    case 'seller':
+      console.log(e.target.value);
+      setSellerId(e.target);
+      break;
+    default:
+      console.log('500');
+    }
+  };
+
+  useEffect(() => {
+    const getSellers = async () => {
+      const headers = {
+        'Content-Type': 'application/json',
+      };
+
+      try {
+        const response = await axios({
+          method: 'get',
+          url: 'http://localhost:3001/seller',
+          headers,
+        });
+
+        setSellers(response.data);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+
+    getSellers();
+  }, []);
+
+  const makeRequest = async () => {
+    const products = [];
+    cartItems.forEach((item) => {
+      products.push({
+        productId: Number(item.id),
+        quantity: Number(item.quantity),
+      });
+    });
+
+    const body = {
+      userId: Number(userId),
+      sellerId: 2,
+      totalPrice: Number(totalPrice.replace(',', '.')),
+      deliveryAddress,
+      deliveryNumber: Number(deliveryNumber),
+      products,
+    };
+
+    console.log(body);
+
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: `${token}`,
+    };
+
+    try {
+      const response = await axios({
+        method: 'post',
+        url: 'http://localhost:3001/customer/checkout',
+        data: body,
+        headers,
+      });
+      history.push(`/customer/orders/${response.data}`);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return (
     <div className="checkout">
@@ -82,36 +175,55 @@ export default function Checkout() {
         Detalhes e Endereço para Entrega
       </h3>
       <form>
-        <div>
-          <label
+        <label htmlFor="seller">
+          P. Vendedora Responsável:
+          <select
+            id="seller"
+            // onChange={ (e) => changeInputValue(e) }
             data-testid={ `${CUSTOMER_TEST_ID}select-seller` }
-            htmlFor="saller"
           >
-            P. Vendedora Responsável:
-            <input type="text" id="seller" required />
-          </label>
-          <label
+            {
+              sellers.map((seller, i) => (
+                <option
+                  onSelect={ (e) => changeInputValue(e) }
+                  id="seller"
+                  key={ i }
+                  value={ seller.id }
+                  name={ seller.name }
+                >
+                  { seller.name }
+                </option>
+              ))
+            }
+          </select>
+        </label>
+        <label htmlFor="address">
+          Endereço:
+          <input
+            type="text"
+            id="address"
+            value={ deliveryAddress }
+            onChange={ (e) => changeInputValue(e) }
             data-testid={ `${CUSTOMER_TEST_ID}input-address` }
-            htmlFor="address"
-          >
-            Endereço:
-            <input type="text" id="address" required />
-          </label>
-          <label
+          />
+        </label>
+        <label htmlFor="number">
+          Número:
+          <input
+            type="text"
+            id="number"
+            value={ deliveryNumber }
+            onChange={ (e) => changeInputValue(e) }
             data-testid={ `${CUSTOMER_TEST_ID}input-address-number` }
-            htmlFor="number"
-          >
-            Número:
-            <input type="text" id="number" required />
-          </label>
-          <button
-            data-testid={ `${CUSTOMER_TEST_ID}button-submit-order` }
-            type="button"
-            onClick={ () => console.log('a') }
-          >
-            FINALIZAR PEDIDO
-          </button>
-        </div>
+          />
+        </label>
+        <button
+          data-testid={ `${CUSTOMER_TEST_ID}button-submit-order` }
+          type="button"
+          onClick={ () => makeRequest() }
+        >
+          FINALIZAR PEDIDO
+        </button>
       </form>
     </div>
   );
