@@ -11,14 +11,25 @@ const CUSTOMER_TEST_ID = 'customer_checkout__';
 export default function Checkout() {
   const name = getFromLocalStorage('user', 'name');
   const role = getFromLocalStorage('user', 'role');
+  // const userId = getFromLocalStorage('user', 'id');
+  const token = getFromLocalStorage('user', 'token');
+  const userId = 1;
 
   const [cartItems, setCartItems] = useState([]);
 
   const [totalPrice, setTotalPrice] = useState(0);
+
   const [deliveryAddress, setDeliveryAddress] = useState('');
   const [deliveryNumber, setDeliveryNumber] = useState('');
+  const [sellerId, setSellerId] = useState(0);
+
+  const [sellers, setSellers] = useState([]);
 
   const userInfos = { name, role };
+
+  useEffect(() => {
+    console.log(sellerId);
+  }, [sellerId]);
 
   useEffect(() => {
     const handleStorageChange = () => {
@@ -45,24 +56,63 @@ export default function Checkout() {
     case 'number':
       setDeliveryNumber(e.target.value);
       break;
+    case 'seller':
+      setSellerId(e.target.value);
+      break;
     default:
       console.log('500');
     }
   };
 
+  useEffect(() => {
+    const getSellers = async () => {
+      const headers = {
+        'Content-Type': 'application/json',
+      };
+
+      try {
+        const response = await axios({
+          method: 'get',
+          url: 'http://localhost:3001/seller',
+          headers,
+        });
+
+        setSellers(response.data);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+
+    getSellers();
+  }, []);
+
   const makeRequest = async () => {
+    const products = [];
+    cartItems.forEach((item) => {
+      products.push({
+        productId: item.id,
+        quantity: item.quantity,
+      });
+    });
+
     const body = {
+      userId,
+      sellerId,
       totalPrice,
       deliveryAddress,
       deliveryNumber,
+      products,
     };
 
-    const headers = { 'Content-Type': 'application/json' };
+    const headers = {
+      'Content-Type': 'application/json',
+      Autorization: `${token},`,
+    };
 
     try {
       const response = await axios({
         method: 'post',
-        url: 'http://localhost:3001/customer/sales',
+        url: 'http://localhost:3001/customer/checkout',
         data: body,
         headers,
       });
@@ -114,10 +164,21 @@ export default function Checkout() {
       <form>
         <label htmlFor="saller">
           P. Vendedora Responsável:
-          <select id="saller" data-testid={ `${CUSTOMER_TEST_ID}select-seller` }>
-            <option value="option1">Option 1</option>
-            <option value="option2">Option 2</option>
-            <option value="option3">Option 3</option>
+          <select
+            id="seller"
+            onChange={ (e) => changeInputValue(e) }
+            data-testid={ `${CUSTOMER_TEST_ID}select-seller` }
+          >
+            {
+              sellers.map((seller, i) => {
+                console.log('a');
+                return (
+                  <option value={ seller.id } key={ i } name={ seller.name }>
+                    { seller.name }
+                  </option>
+                );
+              })
+            }
           </select>
         </label>
         <label htmlFor="address">
