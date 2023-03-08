@@ -1,19 +1,29 @@
-// import axios from 'axios';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
+
 import NavBar from '../components/NavBar';
+import OrderCard from '../components/OrderCard';
+
 import getFromLocalStorage from '../utils/localStorage';
 
 const DETAILS = 'customer_order_details__';
 const ELEMENT = 'element-order-';
 const LABEL_STATUS = 'details-label-delivery-status';
 
+const DTI_ARR = [
+  `${DETAILS}${ELEMENT}table-item-number-`,
+  `${DETAILS}${ELEMENT}table-name-`,
+  `${DETAILS}${ELEMENT}table-quantity-`,
+  `${DETAILS}${ELEMENT}table-unit-price-`,
+  `${DETAILS}${ELEMENT}table-sub-total-`,
+];
+
 const data = {
   id: 1,
   userId: 3,
   sellerId: 2,
-  totalPrice: '30.00',
+  totalPrice: '25.50',
   deliveryAddress: 'rua A',
   deliveryNumber: '2',
   saleDate: '2023-03-06T18:57:49.000Z',
@@ -62,7 +72,7 @@ function CustomerOrderDetails({ match }) {
   const [seller, setSeller] = useState({});
   const [products, setProducts] = useState([]);
   const [date, setDate] = useState('');
-  const [totalPrice, setTotalPrice] = useState('');
+  const [totalPrice, setTotalPrice] = useState(0);
 
   const createDate = (saleDate = undefined) => {
     if (saleDate) {
@@ -83,6 +93,18 @@ function CustomerOrderDetails({ match }) {
     }
   };
 
+  const modifyProducts = (productsArr = undefined) => {
+    if (productsArr) {
+      const productsWithQuantities = productsArr.reduce((acc, crr) => {
+        const obj = { ...crr, quantity: crr.SaleProduct.quantity };
+        acc.push(obj);
+        return acc;
+      }, []);
+
+      setProducts(productsWithQuantities);
+    }
+  };
+
   useEffect(() => {
     const getFetch = async () => {
       const headers = { 'Content-Type': 'application/json' };
@@ -98,7 +120,7 @@ function CustomerOrderDetails({ match }) {
 
         setDetails(response);
         setSeller(response.seller);
-        setProducts(response.products);
+        modifyProducts(response.products);
         setTotalPrice(response.totalPrice);
         createDate(response.saleDate);
       } catch (error) {
@@ -118,54 +140,48 @@ function CustomerOrderDetails({ match }) {
   return (
     <div>
       <NavBar userInfos={ { name, role } } />
-      <div>
-        DETALHE DO PEDIDO
-        <div>
-          <p data-testid={ `${DETAILS}${ELEMENT}details-label-order-id` }>
-            { `Pedido ${id}` }
-          </p>
-          <p data-testid={ `${DETAILS}${ELEMENT}details-label-seller-name` }>
-            { `P. Vend: ${seller.name}` }
-          </p>
-          <p data-testid={ `${DETAILS}${ELEMENT}details-label-order-date` }>
-            { date }
-          </p>
-
+      <h1>DETALHE DO PEDIDO</h1>
+      <p data-testid={ `${DETAILS}${ELEMENT}details-label-order-id` }>
+        { `Pedido ${id}` }
+      </p>
+      <p data-testid={ `${DETAILS}${ELEMENT}details-label-seller-name` }>
+        { `P. Vend: ${seller.name}` }
+      </p>
+      <p data-testid={ `${DETAILS}${ELEMENT}details-label-order-date` }>
+        { date }
+      </p>
+      <p data-testid={ `${DETAILS}${ELEMENT}${LABEL_STATUS}-<INDEX>` }>
+        { status }
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Descrição</th>
+            <th>Quantidade</th>
+            <th>Valor Unitário</th>
+            <th>Sub-total</th>
+          </tr>
+        </thead>
+        <tbody>
           { products.map((product, index) => (
-            <div key={ product.id }>
-              <p data-testid={ `${DETAILS}${ELEMENT}${LABEL_STATUS}${index}` }>
-                { status }
-              </p>
-              <p data-testid={ `${DETAILS}${ELEMENT}table-item-number-${index}` }>
-                { index + 1 }
-              </p>
-              <p data-testid={ `${DETAILS}${ELEMENT}table-name-${index}` }>
-                { product.name }
-              </p>
-              <p data-testid={ `${DETAILS}${ELEMENT}table-quantity-${index}` }>
-                { product.SaleProduct.quantity }
-              </p>
-              <p data-testid={ `${DETAILS}${ELEMENT}table-unit-price-${index}` }>
-                { (product.price).replace('.', ',') }
-              </p>
-              <p data-testid={ `${DETAILS}${ELEMENT}table-sub-total-${index}` }>
-                {(product.price * product.SaleProduct.quantity)
-                  .toFixed(2).toString().replace('.', ',') }
-              </p>
-            </div>
+            <OrderCard
+              key={ index }
+              dataItem={ product }
+              index={ index }
+              testIds={ DTI_ARR }
+            />
           ))}
-          <p data-testid={ `${DETAILS}${ELEMENT}total-price` }>
-            { `Total: ${totalPrice.replace('.', ',')}` }
-          </p>
-          <button
-            data-testid="customer_order_details__button-delivery-check"
-            type="button"
-            onClick={ () => handleBtn }
-          >
-            MARCAR COMO ENTREGUE
-          </button>
-        </div>
-      </div>
+        </tbody>
+      </table>
+      <p>{ `Total: R$ ${totalPrice}`}</p>
+      <button
+        data-testid="customer_order_details__button-delivery-check"
+        type="button"
+        onClick={ () => handleBtn }
+      >
+        MARCAR COMO ENTREGUE
+      </button>
     </div>
   );
 }
