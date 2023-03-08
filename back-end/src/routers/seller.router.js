@@ -1,10 +1,10 @@
 const express = require('express');
 
-const sellerRouter = require('../controllers/seller.controller');
+const sellerController = require('../controllers/seller.controller');
 
 const router = express.Router();
 
-router.get('/orders', sellerRouter.getOrdersByUser);
-router.get('/orders/:id', sellerRouter.getOrderById);
+router.get('/orders', sellerController.getOrdersByUser);
+router.get('/orders/:id', sellerController.getOrderById);
 
 module.exports = router;
