@@ -50,7 +50,7 @@ const getSaleById = async (req, res) => {
 const checkout = async (req, res) => {
   const { message } = await customerService.checkout(req.body);
 
-  return res.status(200).json(message);
+  return res.status(201).json(message);
 };
 
 const updateSale = async (req, res) => {
