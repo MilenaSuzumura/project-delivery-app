@@ -14,4 +14,14 @@ const getOrderById = async (id) => {
   return { message: orderById };
 };
 
-module.exports = { getOrdersByUser, getOrderById };
+const updateOrder = async (id, status) => {
+  await Sale.update({ status }, { where: { id } });
+
+  const order = await Sale.findByPk(
+    id, { include: [{ model: Product, as: 'products' }, { model: User, as: 'seller' }] },
+  );
+
+  return { message: order };
+};
+
+module.exports = { getOrdersByUser, getOrderById, updateOrder };
