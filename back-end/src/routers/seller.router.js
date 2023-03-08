@@ -4,11 +4,7 @@ const sellerRouter = require('../controllers/seller.controller');
 
 const router = express.Router();
 
-const sellerOrders = '/seller/orders';
-
-router.get(sellerOrders, sellerRouter.getOrdersByUser);
-router.get(`${sellerOrders}/:id`, sellerRouter.getOrderById);
-router.get('/sellers/orders', sellerRouter.getAllSellers);
-// router.update(`${sellerOrders}/:id`, sellerRouter.);
+router.get('/orders', sellerRouter.getOrdersByUser);
+router.get('/orders/:id', sellerRouter.getOrderById);
 
 module.exports = router;
