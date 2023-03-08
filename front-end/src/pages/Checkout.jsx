@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 
 import NavBar from '../components/NavBar';
@@ -9,11 +10,12 @@ import getFromLocalStorage from '../utils/localStorage';
 const CUSTOMER_TEST_ID = 'customer_checkout__';
 
 export default function Checkout() {
+  const history = useHistory();
   const name = getFromLocalStorage('user', 'name');
   const role = getFromLocalStorage('user', 'role');
   // const userId = getFromLocalStorage('user', 'id');
   const token = getFromLocalStorage('user', 'token');
-  const userId = 1;
+  const userId = 3;
 
   const [cartItems, setCartItems] = useState([]);
 
@@ -23,13 +25,11 @@ export default function Checkout() {
   const [deliveryNumber, setDeliveryNumber] = useState('');
   const [sellerId, setSellerId] = useState(0);
 
+  console.log(sellerId);
+
   const [sellers, setSellers] = useState([]);
 
   const userInfos = { name, role };
-
-  useEffect(() => {
-    console.log(sellerId);
-  }, [sellerId]);
 
   useEffect(() => {
     const handleStorageChange = () => {
@@ -57,7 +57,8 @@ export default function Checkout() {
       setDeliveryNumber(e.target.value);
       break;
     case 'seller':
-      setSellerId(e.target.value);
+      console.log(e.target.value);
+      setSellerId(e.target);
       break;
     default:
       console.log('500');
@@ -90,19 +91,21 @@ export default function Checkout() {
     const products = [];
     cartItems.forEach((item) => {
       products.push({
-        productId: item.id,
-        quantity: item.quantity,
+        productId: Number(item.id),
+        quantity: Number(item.quantity),
       });
     });
 
     const body = {
-      userId,
-      sellerId,
-      totalPrice,
+      userId: Number(userId),
+      sellerId: 2,
+      totalPrice: Number(totalPrice.replace(',', '.')),
       deliveryAddress,
-      deliveryNumber,
+      deliveryNumber: Number(deliveryNumber),
       products,
     };
+
+    console.log(body);
 
     const headers = {
       'Content-Type': 'application/json',
@@ -116,8 +119,7 @@ export default function Checkout() {
         data: body,
         headers,
       });
-
-      console.log(response);
+      history.push(`/customer/orders/${response.data}`);
     } catch (e) {
       console.log(e);
     }
@@ -162,22 +164,25 @@ export default function Checkout() {
         Detalhes e Endereço para Entrega
       </h3>
       <form>
-        <label htmlFor="saller">
+        <label htmlFor="seller">
           P. Vendedora Responsável:
           <select
             id="seller"
-            onChange={ (e) => changeInputValue(e) }
+            // onChange={ (e) => changeInputValue(e) }
             data-testid={ `${CUSTOMER_TEST_ID}select-seller` }
           >
             {
-              sellers.map((seller, i) => {
-                console.log('a');
-                return (
-                  <option value={ seller.id } key={ i } name={ seller.name }>
-                    { seller.name }
-                  </option>
-                );
-              })
+              sellers.map((seller, i) => (
+                <option
+                  onSelect={ (e) => changeInputValue(e) }
+                  id="seller"
+                  key={ i }
+                  value={ seller.id }
+                  name={ seller.name }
+                >
+                  { seller.name }
+                </option>
+              ))
             }
           </select>
         </label>
