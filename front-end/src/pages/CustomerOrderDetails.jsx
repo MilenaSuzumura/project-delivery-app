@@ -19,48 +19,6 @@ const DTI_ARR = [
   `${DETAILS}${ELEMENT}table-sub-total-`,
 ];
 
-// const data = {
-//   id: 1,
-//   userId: 3,
-//   sellerId: 2,
-//   totalPrice: '25.50',
-//   deliveryAddress: 'rua A',
-//   deliveryNumber: '2',
-//   saleDate: '2023-03-06T18:57:49.000Z',
-//   status: 'Pendente',
-//   products: [
-//     {
-//       id: 2,
-//       name: 'Heineken 600ml',
-//       price: '7.50',
-//       urlImage: 'http://localhost:3001/images/heineken_600ml.jpg',
-//       SaleProduct: {
-//         saleId: 1,
-//         productId: 2,
-//         quantity: 2,
-//       },
-//     },
-//     {
-//       id: 1,
-//       name: 'Cerveja Stella 250ml',
-//       price: '3.50',
-//       urlImage: 'http://localhost:3001/images/heineken_600ml.jpg',
-//       SaleProduct: {
-//         saleId: 1,
-//         productId: 2,
-//         quantity: 3,
-//       },
-//     },
-//   ],
-//   seller: {
-//     id: 2,
-//     name: 'Fulana Pereira',
-//     email: 'fulana@deliveryapp.com',
-//     password: '3c28d2b0881bf46457a853e0b07531c6',
-//     role: 'seller',
-//   },
-// };
-
 function CustomerOrderDetails({ match }) {
   const { id } = match.params;
 
@@ -73,6 +31,7 @@ function CustomerOrderDetails({ match }) {
   const [products, setProducts] = useState([]);
   const [date, setDate] = useState('');
   const [totalPrice, setTotalPrice] = useState(0);
+  const [indexForStatusDTI, setIndexForStatusDTI] = useState();
 
   const createDate = (saleDate = undefined) => {
     if (saleDate) {
@@ -106,7 +65,7 @@ function CustomerOrderDetails({ match }) {
   };
 
   useEffect(() => {
-    const getFetch = async () => {
+    const getDetailsFetch = async () => {
       const headers = { 'Content-Type': 'application/json' };
 
       try {
@@ -117,9 +76,8 @@ function CustomerOrderDetails({ match }) {
           headers,
         });
 
-        console.log(data);
-
         setDetails(data);
+        console.log(data);
         setSeller(data.seller);
         modifyProducts(data.products);
         setTotalPrice(data.totalPrice);
@@ -129,8 +87,34 @@ function CustomerOrderDetails({ match }) {
       }
     };
 
-    getFetch();
+    getDetailsFetch();
   }, [id, token]);
+
+  useEffect(() => {
+    const getOrdersFetch = async () => {
+      const headers = { 'Content-Type': 'application/json' };
+      const body = { userId: 3 };
+
+      try {
+        const { data } = await axios({
+          method: 'post',
+          url: 'http://localhost:3001/customer/orders',
+          data: body,
+          headers,
+        });
+
+        const statusIndex = data
+          .findIndex((order) => order.saleDate === details.saleDate);
+
+        setIndexForStatusDTI(statusIndex);
+        // console.log(statusIndex);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getOrdersFetch();
+  }, [details.saleDate]);
 
   const handleBtn = () => {
     console.log('SENDO CLICADO');
@@ -151,7 +135,7 @@ function CustomerOrderDetails({ match }) {
       <p data-testid={ `${DETAILS}${ELEMENT}details-label-order-date` }>
         { date }
       </p>
-      <p data-testid={ `${DETAILS}${ELEMENT}${LABEL_STATUS}-<INDEX>` }>
+      <p data-testid={ `${DETAILS}${ELEMENT}${LABEL_STATUS}-${indexForStatusDTI}` }>
         { status }
       </p>
       <table>
@@ -179,13 +163,10 @@ function CustomerOrderDetails({ match }) {
       <button
         data-testid="customer_order_details__button-delivery-check"
         type="button"
-        onClick={ () => handleBtn }
+        onClick={ () => handleBtn() }
       >
         MARCAR COMO ENTREGUE
       </button>
-      {/* { products.length > 0 && (
-
-      )} */}
     </div>
   );
 }
