@@ -14,4 +14,9 @@ const getOrderById = async (id) => {
   return { message: orderById };
 };
 
-module.exports = { getOrdersByUser, getOrderById };
+const getAllSellers = async () => {
+  const allSellers = await User.findAll({ where: { role: 'seller' }});
+  return { message: allSellers };
+};
+
+module.exports = { getOrdersByUser, getOrderById, getAllSellers };
