@@ -6,6 +6,15 @@ import getFromLocalStorage from '../utils/localStorage';
 
 const CUSTOMER_TEST_ID = 'customer_checkout__';
 
+const CUSTOMER_DATA_TEST_ID = 'customer_checkout__element-order-table-';
+const DTI_ARR = [
+  `${CUSTOMER_DATA_TEST_ID}item-number-`,
+  `${CUSTOMER_DATA_TEST_ID}name-`,
+  `${CUSTOMER_DATA_TEST_ID}quantity-`,
+  `${CUSTOMER_DATA_TEST_ID}unit-price-`,
+  `${CUSTOMER_DATA_TEST_ID}sub-total-`,
+];
+
 export default function Checkout() {
   const name = getFromLocalStorage('user', 'name');
   const role = getFromLocalStorage('user', 'role');
@@ -54,8 +63,10 @@ export default function Checkout() {
             cartItems.map((item, i) => (
               <OrderCard
                 key={ i }
-                cartItem={ item }
-                id={ i }
+                dataItem={ item }
+                index={ i }
+                testIds={ DTI_ARR }
+                rmBtn
               />
             ))
           }
