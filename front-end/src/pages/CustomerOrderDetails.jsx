@@ -6,6 +6,12 @@ import NavBar from '../components/NavBar';
 import OrderCard from '../components/OrderCard';
 
 import getFromLocalStorage from '../utils/localStorage';
+import { DAY_BEGGINING,
+  DAY_ENDING,
+  MONTH_BEGGINING,
+  MONTH_ENDING,
+  YEAR_BEGGINING,
+  YEAR_ENDING } from '../utils/numbers';
 
 const DETAILS = 'customer_order_details__';
 const ELEMENT = 'element-order-';
@@ -38,15 +44,6 @@ function CustomerOrderDetails({ match }) {
 
   const createDate = (saleDate = undefined) => {
     if (saleDate) {
-      const DAY_BEGGINING = 8;
-      const DAY_ENDING = 10;
-
-      const MONTH_BEGGINING = 5;
-      const MONTH_ENDING = 7;
-
-      const YEAR_BEGGINING = 2;
-      const YEAR_ENDING = 4;
-
       const DAY = saleDate.substring(DAY_BEGGINING, DAY_ENDING);
       const MONTH = saleDate.substring(MONTH_BEGGINING, MONTH_ENDING);
       const YEAR = saleDate.substring(YEAR_BEGGINING, YEAR_ENDING);
@@ -108,7 +105,6 @@ function CustomerOrderDetails({ match }) {
           .findIndex((order) => order.saleDate === details.saleDate);
 
         setIndexForStatusDTI(statusIndex);
-        // console.log(statusIndex);
       } catch (error) {
         console.log(error);
       }
