@@ -106,7 +106,7 @@ export default function Checkout() {
 
     const headers = {
       'Content-Type': 'application/json',
-      Autorization: `${token},`,
+      Authorization: `${token}`,
     };
 
     try {
