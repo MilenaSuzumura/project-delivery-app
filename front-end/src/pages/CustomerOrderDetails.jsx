@@ -19,47 +19,47 @@ const DTI_ARR = [
   `${DETAILS}${ELEMENT}table-sub-total-`,
 ];
 
-const data = {
-  id: 1,
-  userId: 3,
-  sellerId: 2,
-  totalPrice: '25.50',
-  deliveryAddress: 'rua A',
-  deliveryNumber: '2',
-  saleDate: '2023-03-06T18:57:49.000Z',
-  status: 'Pendente',
-  products: [
-    {
-      id: 2,
-      name: 'Heineken 600ml',
-      price: '7.50',
-      urlImage: 'http://localhost:3001/images/heineken_600ml.jpg',
-      SaleProduct: {
-        saleId: 1,
-        productId: 2,
-        quantity: 2,
-      },
-    },
-    {
-      id: 1,
-      name: 'Cerveja Stella 250ml',
-      price: '3.50',
-      urlImage: 'http://localhost:3001/images/heineken_600ml.jpg',
-      SaleProduct: {
-        saleId: 1,
-        productId: 2,
-        quantity: 3,
-      },
-    },
-  ],
-  seller: {
-    id: 2,
-    name: 'Fulana Pereira',
-    email: 'fulana@deliveryapp.com',
-    password: '3c28d2b0881bf46457a853e0b07531c6',
-    role: 'seller',
-  },
-};
+// const data = {
+//   id: 1,
+//   userId: 3,
+//   sellerId: 2,
+//   totalPrice: '25.50',
+//   deliveryAddress: 'rua A',
+//   deliveryNumber: '2',
+//   saleDate: '2023-03-06T18:57:49.000Z',
+//   status: 'Pendente',
+//   products: [
+//     {
+//       id: 2,
+//       name: 'Heineken 600ml',
+//       price: '7.50',
+//       urlImage: 'http://localhost:3001/images/heineken_600ml.jpg',
+//       SaleProduct: {
+//         saleId: 1,
+//         productId: 2,
+//         quantity: 2,
+//       },
+//     },
+//     {
+//       id: 1,
+//       name: 'Cerveja Stella 250ml',
+//       price: '3.50',
+//       urlImage: 'http://localhost:3001/images/heineken_600ml.jpg',
+//       SaleProduct: {
+//         saleId: 1,
+//         productId: 2,
+//         quantity: 3,
+//       },
+//     },
+//   ],
+//   seller: {
+//     id: 2,
+//     name: 'Fulana Pereira',
+//     email: 'fulana@deliveryapp.com',
+//     password: '3c28d2b0881bf46457a853e0b07531c6',
+//     role: 'seller',
+//   },
+// };
 
 function CustomerOrderDetails({ match }) {
   const { id } = match.params;
@@ -110,19 +110,20 @@ function CustomerOrderDetails({ match }) {
       const headers = { 'Content-Type': 'application/json' };
 
       try {
-        let response = await axios({
+        const { data } = await axios({
           method: 'get',
           url: `http://localhost:3001/customer/orders/${id}`,
           data: {},
           headers,
         });
-        response = data;
 
-        setDetails(response);
-        setSeller(response.seller);
-        modifyProducts(response.products);
-        setTotalPrice(response.totalPrice);
-        createDate(response.saleDate);
+        console.log(data);
+
+        setDetails(data);
+        setSeller(data.seller);
+        modifyProducts(data.products);
+        setTotalPrice(data.totalPrice);
+        createDate(data.saleDate);
       } catch (error) {
         console.log(error);
       }
@@ -182,6 +183,9 @@ function CustomerOrderDetails({ match }) {
       >
         MARCAR COMO ENTREGUE
       </button>
+      {/* { products.length > 0 && (
+
+      )} */}
     </div>
   );
 }
