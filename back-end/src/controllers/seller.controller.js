@@ -1,8 +1,7 @@
 const sellerService = require('../services/seller.service');
 
-const getOrdersByUser = async (req, res) => {
-  const { sellerId } = req.body;
-  const { message } = await sellerService.getOrdersByUser(sellerId);
+const getAllOrders = async (_req, res) => {
+  const { message } = await sellerService.getAllOrders();
 
   return res.status(200).json(message);
 };
@@ -22,4 +21,4 @@ const updateOrder = async (req, res) => {
   return res.status(200).json(message);
 };
 
-module.exports = { getOrdersByUser, getOrderById, updateOrder };
+module.exports = { getAllOrders, getOrderById, updateOrder };
