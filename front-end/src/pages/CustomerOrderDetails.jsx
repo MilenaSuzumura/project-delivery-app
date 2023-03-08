@@ -19,6 +19,8 @@ const DTI_ARR = [
   `${DETAILS}${ELEMENT}table-sub-total-`,
 ];
 
+const headers = { 'Content-Type': 'application/json' };
+
 function CustomerOrderDetails({ match }) {
   const { id } = match.params;
 
@@ -31,7 +33,8 @@ function CustomerOrderDetails({ match }) {
   const [products, setProducts] = useState([]);
   const [date, setDate] = useState('');
   const [totalPrice, setTotalPrice] = useState(0);
-  const [indexForStatusDTI, setIndexForStatusDTI] = useState();
+  const [status, setStatus] = useState('');
+  const [indexForStatusDTI, setIndexForStatusDTI] = useState(0);
 
   const createDate = (saleDate = undefined) => {
     if (saleDate) {
@@ -66,8 +69,6 @@ function CustomerOrderDetails({ match }) {
 
   useEffect(() => {
     const getDetailsFetch = async () => {
-      const headers = { 'Content-Type': 'application/json' };
-
       try {
         const { data } = await axios({
           method: 'get',
@@ -77,11 +78,12 @@ function CustomerOrderDetails({ match }) {
         });
 
         setDetails(data);
-        console.log(data);
+
         setSeller(data.seller);
         modifyProducts(data.products);
         setTotalPrice(data.totalPrice);
         createDate(data.saleDate);
+        setStatus(data.status);
       } catch (error) {
         console.log(error);
       }
@@ -92,7 +94,6 @@ function CustomerOrderDetails({ match }) {
 
   useEffect(() => {
     const getOrdersFetch = async () => {
-      const headers = { 'Content-Type': 'application/json' };
       const body = { userId: 3 };
 
       try {
@@ -116,28 +117,39 @@ function CustomerOrderDetails({ match }) {
     getOrdersFetch();
   }, [details.saleDate]);
 
-  const handleBtn = () => {
-    console.log('SENDO CLICADO');
-  };
+  const handleBtn = async () => {
+    const body = { algoId: 0 };
 
-  const { status } = details;
+    try {
+      await axios({
+        method: 'patch',
+        url: 'http://localhost:3001/customer/orders',
+        data: body,
+        headers,
+      });
+
+      setStatus('Entregue');
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div>
       <NavBar userInfos={ { name, role } } />
-      <h1>DETALHE DO PEDIDO</h1>
-      <p data-testid={ `${DETAILS}${ELEMENT}details-label-order-id` }>
+      <h2>Detalhe do Pedido</h2>
+      <h4 data-testid={ `${DETAILS}${ELEMENT}details-label-order-id` }>
         { `Pedido ${id}` }
-      </p>
-      <p data-testid={ `${DETAILS}${ELEMENT}details-label-seller-name` }>
+      </h4>
+      <h4 data-testid={ `${DETAILS}${ELEMENT}details-label-seller-name` }>
         { `P. Vend: ${seller.name}` }
-      </p>
-      <p data-testid={ `${DETAILS}${ELEMENT}details-label-order-date` }>
+      </h4>
+      <h4 data-testid={ `${DETAILS}${ELEMENT}details-label-order-date` }>
         { date }
-      </p>
-      <p data-testid={ `${DETAILS}${ELEMENT}${LABEL_STATUS}-${indexForStatusDTI}` }>
+      </h4>
+      <h3 data-testid={ `${DETAILS}${ELEMENT}${LABEL_STATUS}-${indexForStatusDTI}` }>
         { status }
-      </p>
+      </h3>
       <table>
         <thead>
           <tr>
