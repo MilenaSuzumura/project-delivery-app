@@ -2,19 +2,21 @@ const ONE_DIGIT = 1;
 const TWO_DIGITS = 2;
 const THREE_DIGITS = 3;
 
-const zero = 0;
-const two = 2;
-const four = 4;
-const six = 6;
-const eight = 8;
+const DAY_BEGGINING = 8;
+const DAY_ENDING = 10;
+const MONTH_BEGGINING = 5;
+const MONTH_ENDING = 7;
+const YEAR_BEGGINING = 0;
+const YEAR_ENDING = 4;
 
 export {
   ONE_DIGIT,
   TWO_DIGITS,
   THREE_DIGITS,
-  zero,
-  two,
-  four,
-  six,
-  eight,
+  DAY_BEGGINING,
+  DAY_ENDING,
+  MONTH_BEGGINING,
+  MONTH_ENDING,
+  YEAR_BEGGINING,
+  YEAR_ENDING,
 };

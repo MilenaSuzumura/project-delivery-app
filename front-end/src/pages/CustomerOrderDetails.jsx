@@ -6,6 +6,12 @@ import NavBar from '../components/NavBar';
 import OrderCard from '../components/OrderCard';
 
 import getFromLocalStorage from '../utils/localStorage';
+import { DAY_BEGGINING,
+  DAY_ENDING,
+  MONTH_BEGGINING,
+  MONTH_ENDING,
+  YEAR_BEGGINING,
+  YEAR_ENDING } from '../utils/numbers';
 
 const DETAILS = 'customer_order_details__';
 const ELEMENT = 'element-order-';
@@ -19,47 +25,7 @@ const DTI_ARR = [
   `${DETAILS}${ELEMENT}table-sub-total-`,
 ];
 
-// const data = {
-//   id: 1,
-//   userId: 3,
-//   sellerId: 2,
-//   totalPrice: '25.50',
-//   deliveryAddress: 'rua A',
-//   deliveryNumber: '2',
-//   saleDate: '2023-03-06T18:57:49.000Z',
-//   status: 'Pendente',
-//   products: [
-//     {
-//       id: 2,
-//       name: 'Heineken 600ml',
-//       price: '7.50',
-//       urlImage: 'http://localhost:3001/images/heineken_600ml.jpg',
-//       SaleProduct: {
-//         saleId: 1,
-//         productId: 2,
-//         quantity: 2,
-//       },
-//     },
-//     {
-//       id: 1,
-//       name: 'Cerveja Stella 250ml',
-//       price: '3.50',
-//       urlImage: 'http://localhost:3001/images/heineken_600ml.jpg',
-//       SaleProduct: {
-//         saleId: 1,
-//         productId: 2,
-//         quantity: 3,
-//       },
-//     },
-//   ],
-//   seller: {
-//     id: 2,
-//     name: 'Fulana Pereira',
-//     email: 'fulana@deliveryapp.com',
-//     password: '3c28d2b0881bf46457a853e0b07531c6',
-//     role: 'seller',
-//   },
-// };
+const headers = { 'Content-Type': 'application/json' };
 
 function CustomerOrderDetails({ match }) {
   const { id } = match.params;
@@ -73,18 +39,11 @@ function CustomerOrderDetails({ match }) {
   const [products, setProducts] = useState([]);
   const [date, setDate] = useState('');
   const [totalPrice, setTotalPrice] = useState(0);
+  const [status, setStatus] = useState('');
+  const [indexForStatusDTI, setIndexForStatusDTI] = useState(0);
 
   const createDate = (saleDate = undefined) => {
     if (saleDate) {
-      const DAY_BEGGINING = 8;
-      const DAY_ENDING = 10;
-
-      const MONTH_BEGGINING = 5;
-      const MONTH_ENDING = 7;
-
-      const YEAR_BEGGINING = 2;
-      const YEAR_ENDING = 4;
-
       const DAY = saleDate.substring(DAY_BEGGINING, DAY_ENDING);
       const MONTH = saleDate.substring(MONTH_BEGGINING, MONTH_ENDING);
       const YEAR = saleDate.substring(YEAR_BEGGINING, YEAR_ENDING);
@@ -106,9 +65,7 @@ function CustomerOrderDetails({ match }) {
   };
 
   useEffect(() => {
-    const getFetch = async () => {
-      const headers = { 'Content-Type': 'application/json' };
-
+    const getDetailsFetch = async () => {
       try {
         const { data } = await axios({
           method: 'get',
@@ -117,43 +74,78 @@ function CustomerOrderDetails({ match }) {
           headers,
         });
 
-        console.log(data);
-
         setDetails(data);
+
         setSeller(data.seller);
         modifyProducts(data.products);
         setTotalPrice(data.totalPrice);
         createDate(data.saleDate);
+        setStatus(data.status);
       } catch (error) {
         console.log(error);
       }
     };
 
-    getFetch();
+    getDetailsFetch();
   }, [id, token]);
 
-  const handleBtn = () => {
-    console.log('SENDO CLICADO');
-  };
+  useEffect(() => {
+    const getOrdersFetch = async () => {
+      const body = { userId: 3 };
 
-  const { status } = details;
+      try {
+        const { data } = await axios({
+          method: 'post',
+          url: 'http://localhost:3001/customer/orders',
+          data: body,
+          headers,
+        });
+
+        const statusIndex = data
+          .findIndex((order) => order.saleDate === details.saleDate);
+
+        setIndexForStatusDTI(statusIndex);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getOrdersFetch();
+  }, [details.saleDate]);
+
+  const handleBtn = async () => {
+    const body = { algoId: 0 };
+
+    try {
+      await axios({
+        method: 'patch',
+        url: 'http://localhost:3001/customer/orders',
+        data: body,
+        headers,
+      });
+
+      setStatus('Entregue');
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div>
       <NavBar userInfos={ { name, role } } />
-      <h1>DETALHE DO PEDIDO</h1>
-      <p data-testid={ `${DETAILS}${ELEMENT}details-label-order-id` }>
+      <h2>Detalhe do Pedido</h2>
+      <h4 data-testid={ `${DETAILS}${ELEMENT}details-label-order-id` }>
         { `Pedido ${id}` }
-      </p>
-      <p data-testid={ `${DETAILS}${ELEMENT}details-label-seller-name` }>
+      </h4>
+      <h4 data-testid={ `${DETAILS}${ELEMENT}details-label-seller-name` }>
         { `P. Vend: ${seller.name}` }
-      </p>
-      <p data-testid={ `${DETAILS}${ELEMENT}details-label-order-date` }>
+      </h4>
+      <h4 data-testid={ `${DETAILS}${ELEMENT}details-label-order-date` }>
         { date }
-      </p>
-      <p data-testid={ `${DETAILS}${ELEMENT}${LABEL_STATUS}-<INDEX>` }>
+      </h4>
+      <h3 data-testid={ `${DETAILS}${ELEMENT}${LABEL_STATUS}-${indexForStatusDTI}` }>
         { status }
-      </p>
+      </h3>
       <table>
         <thead>
           <tr>
@@ -179,13 +171,10 @@ function CustomerOrderDetails({ match }) {
       <button
         data-testid="customer_order_details__button-delivery-check"
         type="button"
-        onClick={ () => handleBtn }
+        onClick={ () => handleBtn() }
       >
         MARCAR COMO ENTREGUE
       </button>
-      {/* { products.length > 0 && (
-
-      )} */}
     </div>
   );
 }

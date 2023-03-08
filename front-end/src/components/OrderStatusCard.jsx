@@ -1,13 +1,18 @@
 import PropTypes from 'prop-types';
 import { ONE_DIGIT, TWO_DIGITS, THREE_DIGITS,
-  zero, two, four, six, eight } from '../utils/numbers';
+  DAY_BEGGINING,
+  DAY_ENDING,
+  MONTH_BEGGINING,
+  MONTH_ENDING,
+  YEAR_BEGGINING,
+  YEAR_ENDING } from '../utils/numbers';
 
 function OrderStatusCard({ orderInfo }) {
   const { id, status, totalPrice, saleDate } = orderInfo;
 
-  const DAY = saleDate.substring(zero, two);
-  const MONTH = saleDate.substring(two, four);
-  const YEAR = saleDate.substring(six, eight);
+  const DAY = saleDate.substring(DAY_BEGGINING, DAY_ENDING);
+  const MONTH = saleDate.substring(MONTH_BEGGINING, MONTH_ENDING);
+  const YEAR = saleDate.substring(YEAR_BEGGINING, YEAR_ENDING);
 
   const ORDER_ELEMENT = 'customer_orders__element-';
 
@@ -46,7 +51,11 @@ function OrderStatusCard({ orderInfo }) {
         >
           { `${DAY}/${MONTH}/${YEAR}` }
         </p>
-        <p data-testid={ `${ORDER_ELEMENT}card-price-${id}` }>{ totalPrice }</p>
+        <p
+          data-testid={ `${ORDER_ELEMENT}card-price-${id}` }
+        >
+          { totalPrice.replace('.', ',') }
+        </p>
       </a>
     </div>
   );
@@ -56,7 +65,7 @@ OrderStatusCard.propTypes = {
   orderInfo: PropTypes.shape({
     id: PropTypes.number.isRequired,
     status: PropTypes.string.isRequired,
-    totalPrice: PropTypes.number.isRequired,
+    totalPrice: PropTypes.string.isRequired,
     saleDate: PropTypes.string.isRequired,
   }).isRequired,
 };
