@@ -8,7 +8,7 @@ import { ONE_DIGIT, TWO_DIGITS, THREE_DIGITS,
   YEAR_ENDING } from '../utils/numbers';
 
 function OrderStatusCard({ orderInfo }) {
-  const { id, status, totalPrice, saleDate } = orderInfo;
+  const { id, status, totalPrice, saleDate, deliveryAddress, deliveryNumber } = orderInfo;
 
   const DAY = saleDate.substring(DAY_BEGGINING, DAY_ENDING);
   const MONTH = saleDate.substring(MONTH_BEGGINING, MONTH_ENDING);
@@ -43,7 +43,7 @@ function OrderStatusCard({ orderInfo }) {
 
   return (
     <div>
-      <a href={ `/customer/orders/${id}` }>
+      <a href={ `/seller/orders/${id}` }>
         { cardGenerator() }
         <p data-testid={ `${ORDER_ELEMENT}delivery-status-${id}` }>{ status }</p>
         <p
@@ -56,6 +56,9 @@ function OrderStatusCard({ orderInfo }) {
         >
           { totalPrice.replace('.', ',') }
         </p>
+        <p data-testid={ `${ORDER_ELEMENT}card-address-${id}` }>
+          { `${deliveryAddress}, ${deliveryNumber}` }
+        </p>
       </a>
     </div>
   );
@@ -67,6 +70,8 @@ OrderStatusCard.propTypes = {
     status: PropTypes.string.isRequired,
     totalPrice: PropTypes.string.isRequired,
     saleDate: PropTypes.string.isRequired,
+    deliveryAddress: PropTypes.string.isRequired,
+    deliveryNumber: PropTypes.string.isRequired,
   }).isRequired,
 };
 

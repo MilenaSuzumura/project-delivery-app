@@ -25,6 +25,7 @@ function CustomerOrders() {
             data: { sellerId },
             headers,
           });
+          console.log(data);
           setOrders(data);
         } catch (error) {
           console.log(error);
