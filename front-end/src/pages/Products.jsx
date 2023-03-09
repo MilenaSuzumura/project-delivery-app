@@ -48,8 +48,8 @@ function Products() {
       });
       try {
         setProducts(data);
-      } catch (e) {
-        console.log(e);
+      } catch (error) {
+        console.log(error);
       }
     };
     getProducts();
