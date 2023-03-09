@@ -24,4 +24,10 @@ const updateOrder = async (id, status) => {
   return { message: order };
 };
 
-module.exports = { getAllOrders, getOrderById, updateOrder };
+const getOrderBySeller = async (sellerId) => {
+  const orderBySeller = await Sale.findAll({ where: { sellerId } });
+
+  return { message: orderBySeller };
+};
+
+module.exports = { getAllOrders, getOrderById, updateOrder, getOrderBySeller };
