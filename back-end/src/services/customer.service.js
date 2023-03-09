@@ -94,9 +94,9 @@ const deleteSale = async (id) => {
 };
 
 const getOrdersByUser = async (userId) => {
-  const sales = await Sale.findAll({ where: { userId } });
+  const orders = await Sale.findAll({ where: { userId } });
 
-  return { message: sales };
+  return { message: orders };
 };
 
 const getOrderById = async (id) => {
