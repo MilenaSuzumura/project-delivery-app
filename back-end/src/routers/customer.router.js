@@ -8,13 +8,13 @@ const router = express.Router();
 const productById = '/products/:id';
 const salesById = '/sales/:id';
 
-router.get('/orders', customerController.getOrdersByUser);
 router.get('/orders/:id', customerController.getOrderById);
 router.get('/products', customerController.getAllProducts);
 router.get(productById, customerController.getProductById);
 router.get('/sales', customerController.getAllSales);
 router.get(salesById, customerController.getSaleById);
 
+router.post('/orders', customerController.getOrdersByUser);
 router.post('/checkout', validateToken, customerController.checkout);
 router.post('/products', customerController.createProduct);
 

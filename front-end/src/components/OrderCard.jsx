@@ -3,14 +3,16 @@ import PropTypes from 'prop-types';
 
 const CUSTOMER_TEST_ID = 'customer_checkout__element-order-table-';
 
-function OrderCard({ cartItem, id }) {
-  const { name, quantity, price } = cartItem;
-  const total = price * quantity;
+function OrderCard({ dataItem, index, rmBtn, testIds }) {
+  const [dtiItem, dtiName, dtiQnt, dtiUP, dtiST] = testIds;
+
+  const { name, quantity, price } = dataItem;
+  const subTotal = price * quantity;
 
   const removeItem = () => {
     const items = JSON.parse(localStorage.getItem('cartItems'));
 
-    items.splice(id, 1);
+    items.splice(index, 1);
     localStorage.setItem('cartItems', JSON.stringify(items));
 
     window.dispatchEvent(new Event('storage_checkout'));
@@ -18,54 +20,44 @@ function OrderCard({ cartItem, id }) {
 
   return (
     <tr>
-      <td
-        data-testid={ `${CUSTOMER_TEST_ID}item-number-${id}` }
-      >
-        { id + 1 }
+      <td data-testid={ `${dtiItem}${index}` }>
+        { index + 1 }
       </td>
-      <td
-        data-testid={ `${CUSTOMER_TEST_ID}name-${id}` }
-      >
+      <td data-testid={ `${dtiName}${index}` }>
         { name }
       </td>
-      <td
-        data-testid={ `${CUSTOMER_TEST_ID}quantity-${id}` }
-      >
+      <td data-testid={ `${dtiQnt}${index}` }>
         { quantity }
       </td>
-      <td
-        data-testid={ `${CUSTOMER_TEST_ID}unit-price-${id}` }
-      >
+      <td data-testid={ `${dtiUP}${index}` }>
         { `R$ ${price.toString().replace('.', ',')}` }
       </td>
-      <td
-        data-testid={ `${CUSTOMER_TEST_ID}sub-total-${id}` }
-      >
-        { `R$ ${total.toFixed(2).toString().replace('.', ',')}` }
+      <td data-testid={ `${dtiST}${index}` }>
+        { `R$ ${subTotal.toFixed(2).toString().replace('.', ',')}` }
       </td>
-      <td
-        data-testid={ `${CUSTOMER_TEST_ID}remove-${id}` }
-      >
-        <button
-          type="button"
-          onClick={ () => removeItem() }
-        >
-          Remover
-        </button>
-      </td>
+      {rmBtn && (
+        <td data-testid={ `${CUSTOMER_TEST_ID}remove-${index}` }>
+          <button type="button" onClick={ () => removeItem() }>
+            Remover
+          </button>
+        </td>)}
     </tr>
   );
 }
 
+OrderCard.defaultProps = {
+  rmBtn: false,
+};
+
 OrderCard.propTypes = {
-  cartItem: PropTypes.shape({
-    id: PropTypes.number.isRequired,
+  dataItem: PropTypes.shape({
     name: PropTypes.string.isRequired,
-    urlImage: PropTypes.string.isRequired,
     price: PropTypes.string.isRequired,
-    quantity: PropTypes.number.isRequired,
+    quantity: PropTypes.number,
   }).isRequired,
-  id: PropTypes.number.isRequired,
+  index: PropTypes.number.isRequired,
+  rmBtn: PropTypes.bool,
+  testIds: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default OrderCard;
