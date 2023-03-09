@@ -1,7 +1,9 @@
+import axios from 'axios';
 import { useEffect, useState } from 'react';
+
 import NavBar from '../components/NavBar';
 import OrderStatusCard from '../components/OrderStatusCard';
-import fetchSimulator from '../utils/fetchSimulator';
+
 import getFromLocalStorage from '../utils/localStorage';
 
 function CustomerOrders() {
@@ -12,11 +14,21 @@ function CustomerOrders() {
 
   useEffect(() => {
     const getFetch = async () => {
-      try {
-        const data = await fetchSimulator();
-        setOrders(data);
-      } catch (error) {
-        console.log(error);
+      const headers = { 'Content-Type': 'application/json' };
+      const userId = JSON.parse(localStorage.getItem('user')).id;
+
+      if (userId) {
+        try {
+          const { data } = await axios({
+            method: 'post',
+            url: 'http://localhost:3001/customer/orders/',
+            data: { userId },
+            headers,
+          });
+          setOrders(data);
+        } catch (error) {
+          console.log(error);
+        }
       }
     };
 
@@ -27,7 +39,7 @@ function CustomerOrders() {
     <div>
       <NavBar userInfos={ { name, role } } />
       <h1>Customer Orders</h1>
-      { orders.length && orders.map((order) => (
+      { orders.length > 0 && orders.map((order) => (
         <OrderStatusCard
           key={ order.id }
           orderInfo={ order }
