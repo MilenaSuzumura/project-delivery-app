@@ -9,4 +9,6 @@ router.get('/orders/:id', sellerController.getOrderById);
 
 router.patch('orders/:id', sellerController.updateOrder);
 
+router.post('/orders', sellerController.getOrderBySeller);
+
 module.exports = router;

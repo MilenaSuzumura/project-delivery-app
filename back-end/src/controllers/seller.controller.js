@@ -21,4 +21,11 @@ const updateOrder = async (req, res) => {
   return res.status(200).json(message);
 };
 
-module.exports = { getAllOrders, getOrderById, updateOrder };
+const getOrderBySeller = async (req, res) => {
+  const { sellerId } = req.body;
+  const { message } = await sellerService.getOrderBySeller(sellerId);
+
+  return res.status(200).json(message);
+};
+
+module.exports = { getAllOrders, getOrderById, updateOrder, getOrderBySeller };

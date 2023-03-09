@@ -4,6 +4,8 @@ import { useHistory } from 'react-router-dom';
 
 const loginTestId = 'common_login__';
 const CUSTOMER = 'customer';
+const SELLER = 'seller';
+const ADMIN = 'admnistrator';
 
 export default function Login() {
   const history = useHistory();
@@ -18,18 +20,30 @@ export default function Login() {
     if (user) {
       const { role } = user;
       switch (role) {
-      case 'administrator':
+      case ADMIN:
         history.push('/ADMIN');
         break;
-      case 'seller':
-        history.push('/SELLER');
+      case SELLER:
+        history.push(`${SELLER}/orders`);
         break;
       default:
-        history.push('/customer/products');
+        history.push(`${CUSTOMER}/products`);
         break;
       }
     }
   }, [history]);
+
+  const redirect = ({ user, token }) => {
+    const dataToSave = {
+      token,
+      ...user,
+    };
+    localStorage.setItem('user', JSON.stringify(dataToSave));
+
+    if (user.role === SELLER) { return history.push(`${SELLER}/orders`); }
+    if (user.role === ADMIN) { return history.push('/ADMIN'); }
+    history.push(`${CUSTOMER}/products`);
+  };
 
   useEffect(() => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -47,7 +61,6 @@ export default function Login() {
       email: emailValue,
       password: passwordValue,
     };
-
     const headers = { 'Content-Type': 'application/json' };
 
     try {
@@ -57,18 +70,8 @@ export default function Login() {
         data: body,
         headers,
       });
-      // user = { name, email, role}
-      const { data: { user, token } } = response;
-
-      if (user.role === CUSTOMER) {
-        const dataToSave = {
-          token,
-          ...user,
-        };
-
-        localStorage.setItem('user', JSON.stringify(dataToSave));
-        history.push('/customer/products');
-      }
+      const { data } = response;
+      redirect(data);
     } catch (e) {
       setErrorMessage(e.message);
       setLoginResponse(false);
