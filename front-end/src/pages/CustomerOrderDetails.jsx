@@ -117,14 +117,14 @@ function CustomerOrderDetails({ match }) {
     const body = { algoId: 0 };
 
     try {
-        await axios({
-            method: 'patch',
-            url: 'http://localhost:3001/customer/orders',
-            data: body,
-            headers,
-          });
-          
-        setStatus('Entregue');
+      await axios({
+        method: 'patch',
+        url: 'http://localhost:3001/customer/orders',
+        data: body,
+        headers,
+      });
+
+      setStatus('Entregue');
     } catch (error) {
       console.log(error);
     }
