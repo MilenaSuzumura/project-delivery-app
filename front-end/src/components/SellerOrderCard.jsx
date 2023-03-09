@@ -14,7 +14,7 @@ function OrderStatusCard({ orderInfo }) {
   const MONTH = saleDate.substring(MONTH_BEGGINING, MONTH_ENDING);
   const YEAR = saleDate.substring(YEAR_BEGGINING, YEAR_ENDING);
 
-  const ORDER_ELEMENT = 'customer_orders__element-';
+  const ORDER_ELEMENT = 'seller_orders__element-';
 
   const cardGenerator = () => {
     switch (JSON.stringify(id).length) {

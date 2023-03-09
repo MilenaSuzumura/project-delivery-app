@@ -15,14 +15,14 @@ function CustomerOrders() {
   useEffect(() => {
     const getFetch = async () => {
       const headers = { 'Content-Type': 'application/json' };
-      const userId = JSON.parse(localStorage.getItem('user')).id;
+      const sellerId = JSON.parse(localStorage.getItem('user')).id;
 
-      if (userId) {
+      if (sellerId) {
         try {
           const { data } = await axios({
             method: 'post',
-            url: 'http://localhost:3001/customer/orders/',
-            data: { userId },
+            url: 'http://localhost:3001/seller/orders/',
+            data: { sellerId },
             headers,
           });
           setOrders(data);
