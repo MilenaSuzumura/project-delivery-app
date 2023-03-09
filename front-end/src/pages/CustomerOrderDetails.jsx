@@ -117,14 +117,14 @@ function CustomerOrderDetails({ match }) {
     const body = { algoId: 0 };
 
     try {
-      await axios({
-        method: 'patch',
-        url: 'http://localhost:3001/customer/orders',
-        data: body,
-        headers,
-      });
-
-      setStatus('Entregue');
+        await axios({
+            method: 'patch',
+            url: 'http://localhost:3001/customer/orders',
+            data: body,
+            headers,
+          });
+          
+        setStatus('Entregue');
     } catch (error) {
       console.log(error);
     }
@@ -167,11 +167,15 @@ function CustomerOrderDetails({ match }) {
           ))}
         </tbody>
       </table>
-      <p>{ `Total: R$ ${totalPrice}`}</p>
+      <p>Total: R$ </p>
+      <p data-testid={ `${DETAILS}${ELEMENT}total-price` }>
+        { `${totalPrice.toString().replace('.', ',')}`}
+      </p>
       <button
-        data-testid="customer_order_details__button-delivery-check"
+        data-testid={ `${DETAILS}button-delivery-check` }
         type="button"
         onClick={ () => handleBtn() }
+        disabled
       >
         MARCAR COMO ENTREGUE
       </button>
