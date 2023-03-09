@@ -20,11 +20,11 @@ const DTI_ARR = [
 
 export default function Checkout() {
   const history = useHistory();
+
   const name = getFromLocalStorage('user', 'name');
   const role = getFromLocalStorage('user', 'role');
-  // const userId = getFromLocalStorage('user', 'id');
+  const userId = getFromLocalStorage('user', 'id');
   const token = getFromLocalStorage('user', 'token');
-  const userId = 3;
 
   const [cartItems, setCartItems] = useState([]);
 
@@ -33,8 +33,6 @@ export default function Checkout() {
   const [deliveryAddress, setDeliveryAddress] = useState('');
   const [deliveryNumber, setDeliveryNumber] = useState('');
   const [sellerId, setSellerId] = useState(0);
-
-  console.log(sellerId);
 
   const [sellers, setSellers] = useState([]);
 
@@ -66,11 +64,10 @@ export default function Checkout() {
       setDeliveryNumber(e.target.value);
       break;
     case 'seller':
-      console.log(e.target.value);
-      setSellerId(e.target);
+      setSellerId(e.target.value);
       break;
     default:
-      console.log('500');
+      throw new Error('not found');
     }
   };
 
@@ -88,6 +85,8 @@ export default function Checkout() {
         });
 
         setSellers(response.data);
+
+        setSellerId(response.data[0].id);
       } catch (e) {
         console.log(e);
       }
@@ -107,14 +106,12 @@ export default function Checkout() {
 
     const body = {
       userId: Number(userId),
-      sellerId: 2,
+      sellerId: Number(sellerId),
       totalPrice: Number(totalPrice.replace(',', '.')),
       deliveryAddress,
       deliveryNumber: Number(deliveryNumber),
       products,
     };
-
-    console.log(body);
 
     const headers = {
       'Content-Type': 'application/json',
@@ -168,7 +165,7 @@ export default function Checkout() {
       <h2
         data-testid="customer_checkout__element-order-total-price"
       >
-        { `Total: R$ ${totalPrice}`}
+        {`Total: R$ ${totalPrice}`}
       </h2>
 
       <h3>
@@ -179,8 +176,9 @@ export default function Checkout() {
           P. Vendedora Responsável:
           <select
             id="seller"
-            // onChange={ (e) => changeInputValue(e) }
+            onChange={ (e) => changeInputValue(e) }
             data-testid={ `${CUSTOMER_TEST_ID}select-seller` }
+            value={ sellerId }
           >
             {
               sellers.map((seller, i) => (
