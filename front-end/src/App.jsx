@@ -12,7 +12,7 @@ import Products from './pages/Products';
 import Checkout from './pages/Checkout';
 import CustomerOrders from './pages/CustomerOrders';
 import CustomerOrderDetails from './pages/CustomerOrderDetails';
-
+import Admin from './pages/Admin';
 import SellerOrders from './pages/SellerOrders';
 
 function App() {
@@ -20,6 +20,7 @@ function App() {
     <div className="App">
       <Provider>
         <Switch>
+          <Route exact path="/admin" component={ Admin } />
           <Route exact path="/" render={ () => <Redirect to="/login" /> } />
           <Route exact path="/login" component={ Login } />
           <Route exact path="/register" component={ Register } />

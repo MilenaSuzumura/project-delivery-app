@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
+import getFromLocalStorage from '../utils/localStorage';
+
+import UserTable from '../components/UserTable';
+
 export default function Admin() {
   const name = getFromLocalStorage('user', 'name');
 
@@ -14,6 +18,8 @@ export default function Admin() {
 
   const [isValidUser, setIsValidUser] = useState(false);
 
+  const [users, setUsers] = useState([]);
+
   const history = useHistory();
 
   const logOut = () => {
@@ -22,14 +28,29 @@ export default function Admin() {
   };
 
   useEffect(() => {
+    setUsers([
+      {
+        name: 'nome1',
+        email: 'email1',
+        role: 'seller',
+      },
+      {
+        name: 'nome2',
+        email: 'email2',
+        role: 'Cliente',
+      },
+    ]);
+  }, []);
+
+  useEffect(() => {
     const nameRegex = /^.{12}/;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const passwordRegex = /^.{6}/;
 
     if (
-      nameRegex(newUserName)
-      && emailRegex(newUserEmail)
-      && passwordRegex(newUserPassword)) setIsValidUser(true);
+      nameRegex.test(newUserName)
+      && emailRegex.test(newUserEmail)
+      && passwordRegex.test(newUserPassword)) setIsValidUser(true);
     else setIsValidUser(false);
   }, [newUserEmail, newUserName, newUserPassword]);
 
@@ -138,6 +159,25 @@ export default function Admin() {
           </button>
         </label>
       </form>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Nome</th>
+            <th>E-mail</th>
+            <th>Tipo</th>
+            <th>Excluir</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            users?.map((user, i) => (
+              <UserTable user={ user } index={ i } key={ i } />
+            ))
+          }
+        </tbody>
+      </table>
     </div>
   );
 }
