@@ -20,7 +20,6 @@ function App() {
     <div className="App">
       <Provider>
         <Switch>
-          <Route exact path="/admin" component={ Admin } />
           <Route exact path="/" render={ () => <Redirect to="/login" /> } />
           <Route exact path="/login" component={ Login } />
           <Route exact path="/register" component={ Register } />
@@ -30,7 +29,7 @@ function App() {
           <Route exact path="/customer/orders" component={ CustomerOrders } />
           <Route exact path="/customer/orders/:id" component={ CustomerOrderDetails } />
           {/* <Route exact path="/customer/homepage" component={ HomePage } /> */}
-
+          <Route exact path="/admin/manage" component={ Admin } />
           <Route exact path="/seller/orders" component={ SellerOrders } />
         </Switch>
       </Provider>
