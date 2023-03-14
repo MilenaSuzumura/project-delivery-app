@@ -13,7 +13,7 @@ import { DAY_BEGGINING,
   YEAR_BEGGINING,
   YEAR_ENDING } from '../utils/numbers';
 
-const DETAILS = 'customer_order_details__';
+const DETAILS = 'seller_order_details__';
 const ELEMENT = 'element-order-';
 const LABEL_STATUS = 'details-label-delivery-status';
 
@@ -69,7 +69,7 @@ function CustomerOrderDetails({ match }) {
       try {
         const { data } = await axios({
           method: 'get',
-          url: `http://localhost:3001/customer/orders/${id}`,
+          url: `http://localhost:3001/seller/orders/${id}`,
           data: {},
           headers,
         });
@@ -95,8 +95,8 @@ function CustomerOrderDetails({ match }) {
 
       try {
         const { data } = await axios({
-          method: 'post',
-          url: 'http://localhost:3001/customer/orders',
+          method: 'get',
+          url: 'http://localhost:3001/seller/orders',
           data: body,
           headers,
         });
@@ -113,21 +113,45 @@ function CustomerOrderDetails({ match }) {
     getOrdersFetch();
   }, [details.saleDate]);
 
-  const handleBtn = async () => {
-    try {
-      const ENTREGUE = 'Entregue';
-      await axios({
-        method: 'patch',
-        url: `http://localhost:3001/seller/orders/${details.id}`,
-        data: { status: ENTREGUE },
-        headers,
-      });
+  const handlePreparingBtn = () => {
+    const updateStatus = async () => {
+      try {
+        const PREPARANDO = 'Preparando';
+        await axios({
+          method: 'patch',
+          url: `http://localhost:3001/seller/orders/${id}`,
+          data: { status: PREPARANDO },
+          headers,
+        });
+        setStatus(PREPARANDO);
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
-      setStatus(ENTREGUE);
-    } catch (error) {
-      console.log(error);
-    }
+    updateStatus();
   };
+
+  const handleDispatchBtn = () => {
+    const updateStatus = async () => {
+      try {
+        const EM_TRANSITO = 'Em Trânsito';
+        await axios({
+          method: 'patch',
+          url: `http://localhost:3001/seller/orders/${id}`,
+          data: { status: EM_TRANSITO },
+          headers,
+        });
+        setStatus(EM_TRANSITO);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    updateStatus();
+  };
+
+  console.log(status);
 
   return (
     <div>
@@ -162,6 +186,7 @@ function CustomerOrderDetails({ match }) {
               dataItem={ product }
               index={ index }
               testIds={ DTI_ARR }
+              seller
             />
           ))}
         </tbody>
@@ -171,12 +196,20 @@ function CustomerOrderDetails({ match }) {
         { `${totalPrice.toString().replace('.', ',')}`}
       </p>
       <button
-        data-testid={ `${DETAILS}button-delivery-check` }
+        data-testid={ `${DETAILS}button-preparing-check` }
         type="button"
-        onClick={ () => handleBtn() }
-        disabled={ status !== 'Em Trânsito' }
+        onClick={ () => handlePreparingBtn() }
+        disabled={ status !== 'Pendente' }
       >
-        MARCAR COMO ENTREGUE
+        PREPARAR PEDIDO
+      </button>
+      <button
+        data-testid={ `${DETAILS}button-dispatch-check` }
+        type="button"
+        onClick={ () => handleDispatchBtn() }
+        disabled={ status !== 'Preparando' }
+      >
+        SAIU PARA ENTREGA
       </button>
     </div>
   );

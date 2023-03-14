@@ -6,6 +6,7 @@ import getFromLocalStorage from '../utils/localStorage';
 const ROLE_PRODUCTS = 'customer_products__element-navbar-';
 
 function NavBar({ userInfos }) {
+  const { role } = userInfos;
   const [notLogged, setNotLogged] = useState();
   const history = useHistory();
 
@@ -47,7 +48,7 @@ function NavBar({ userInfos }) {
         <button
           type="button"
           data-testid={ `${ROLE_PRODUCTS}link-orders` }
-          onClick={ notLogged ? history.push('/') : () => changeURL('/customer/orders') }
+          onClick={ notLogged ? history.push('/') : () => changeURL(`/${role}/orders`) }
         >
           MEUS PEDIDOS
         </button>
