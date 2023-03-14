@@ -12,7 +12,7 @@ import Products from './pages/Products';
 import Checkout from './pages/Checkout';
 import CustomerOrders from './pages/CustomerOrders';
 import CustomerOrderDetails from './pages/CustomerOrderDetails';
-
+import Admin from './pages/Admin';
 import SellerOrders from './pages/SellerOrders';
 import SellerOrderDetails from './pages/SellerOrderDetails';
 
@@ -30,7 +30,7 @@ function App() {
           <Route exact path="/customer/orders" component={ CustomerOrders } />
           <Route exact path="/customer/orders/:id" component={ CustomerOrderDetails } />
           {/* <Route exact path="/customer/homepage" component={ HomePage } /> */}
-
+          <Route exact path="/admin/manage" component={ Admin } />
           <Route exact path="/seller/orders" component={ SellerOrders } />
           <Route exact path="/seller/orders/:id" component={ SellerOrderDetails } />
         </Switch>

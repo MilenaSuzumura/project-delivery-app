@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 const loginTestId = 'common_login__';
 const CUSTOMER = 'customer';
 const SELLER = 'seller';
-const ADMIN = 'admnistrator';
+const ADMIN = 'administrator';
 
 export default function Login() {
   const history = useHistory();
@@ -41,7 +41,7 @@ export default function Login() {
     localStorage.setItem('user', JSON.stringify(dataToSave));
 
     if (user.role === SELLER) { return history.push(`${SELLER}/orders`); }
-    if (user.role === ADMIN) { return history.push('/ADMIN'); }
+    if (user.role === ADMIN) { return history.push('/admin/manage'); }
     history.push(`${CUSTOMER}/products`);
   };
 
